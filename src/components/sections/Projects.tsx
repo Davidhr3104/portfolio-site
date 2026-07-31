@@ -3,6 +3,7 @@ import path from "node:path";
 import Image from "next/image";
 import { Reveal } from "@/components/Reveal";
 import { ColorBlob } from "@/components/ColorBlob";
+import { SectionLabel } from "@/components/SectionLabel";
 
 type Project = {
   index: string;
@@ -59,15 +60,13 @@ export function Projects() {
   return (
     <section id="projects" className="relative overflow-hidden border-t border-border">
       <ColorBlob
-        className="top-0 right-0 -translate-y-1/4 translate-x-1/4"
-        size={440}
-        opacity={0.11}
+        className="top-0 right-0 -translate-y-1/5 translate-x-[10%]"
+        size={480}
+        opacity={0.20}
       />
       <div className="relative mx-auto max-w-5xl px-6 py-24 sm:py-28">
         <Reveal>
-          <h2 className="font-sans text-sm uppercase tracking-[0.2em] text-muted">
-            Selected Work
-          </h2>
+          <SectionLabel>Selected Work</SectionLabel>
         </Reveal>
 
         <div className="mt-4">
@@ -75,8 +74,8 @@ export function Projects() {
             const hasImage = projectImageExists(project.image);
             return (
               <Reveal key={project.index} as="article" delay={i * 60}>
-                <div className="grid grid-cols-1 items-start gap-6 border-t border-border py-14 first:border-t-0 md:grid-cols-[64px_1fr_1fr] md:gap-12">
-                  <span className="font-serif text-2xl text-muted">
+                <div className="group grid grid-cols-1 items-start gap-6 border-t border-border px-4 py-14 -mx-4 first:border-t-0 transition-colors duration-300 hover:bg-wash md:grid-cols-[64px_1fr_1fr] md:gap-12">
+                  <span className="font-serif text-2xl text-accent transition-transform duration-300 group-hover:translate-x-1">
                     {project.index}
                   </span>
                   <div>
@@ -87,7 +86,7 @@ export function Projects() {
                       {project.description}
                     </p>
                   </div>
-                  <div className="relative aspect-[4/3] w-full overflow-hidden border border-border bg-surface">
+                  <div className="relative aspect-[4/3] w-full overflow-hidden border border-border bg-surface transition-colors duration-300 group-hover:border-accent/50">
                     {hasImage ? (
                       <Image
                         src={`/projects/${project.image}`}

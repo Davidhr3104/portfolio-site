@@ -1,5 +1,6 @@
 import { Reveal } from "@/components/Reveal";
 import { ColorBlob } from "@/components/ColorBlob";
+import { SectionLabel } from "@/components/SectionLabel";
 
 export function About() {
   return (
@@ -8,16 +9,14 @@ export function About() {
       className="relative overflow-hidden border-t border-border bg-wash"
     >
       <ColorBlob
-        className="bottom-0 left-0 -translate-x-1/3 translate-y-1/3"
-        size={420}
-        opacity={0.16}
+        className="bottom-0 left-0 -translate-x-[10%] translate-y-1/5"
+        size={470}
+        opacity={0.28}
       />
       <div className="relative mx-auto max-w-5xl px-6 py-24 sm:py-28">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-[200px_1fr] md:gap-16">
           <Reveal>
-            <h2 className="font-sans text-sm uppercase tracking-[0.2em] text-muted">
-              About
-            </h2>
+            <SectionLabel>About</SectionLabel>
           </Reveal>
           <div className="max-w-2xl space-y-6">
             <Reveal>

@@ -8,9 +8,9 @@ export function Hero() {
       className="relative mx-auto max-w-5xl overflow-hidden px-6 pt-44 pb-28 sm:pt-56 sm:pb-36"
     >
       <ColorBlob
-        className="top-0 right-0 -translate-y-1/3 translate-x-1/4"
-        size={480}
-        opacity={0.14}
+        className="top-0 right-0 -translate-y-1/5 translate-x-[10%]"
+        size={560}
+        opacity={0.26}
       />
       <Reveal>
         <div className="relative">
@@ -19,7 +19,7 @@ export function Hero() {
             className="pointer-events-none absolute -inset-x-12 -inset-y-16 -z-10 sm:-inset-x-24"
             style={{
               background:
-                "radial-gradient(ellipse 60% 70% at 30% 45%, rgba(30,58,95,0.13), rgba(30,58,95,0) 70%)",
+                "radial-gradient(ellipse 60% 70% at 30% 45%, rgba(88,133,182,0.16), rgba(88,133,182,0) 70%)",
             }}
           />
           <h1 className="font-serif text-[clamp(2.75rem,9vw,6.5rem)] leading-[1.02] tracking-tight text-foreground">

@@ -36,6 +36,7 @@ import { GoHighLevel } from "@/components/icons/GoHighLevel";
 import { Antigravity } from "@/components/icons/Antigravity";
 import { Reveal } from "@/components/Reveal";
 import { ColorBlob } from "@/components/ColorBlob";
+import { SectionLabel } from "@/components/SectionLabel";
 
 type StackItem = { label: string; icon?: IconType };
 
@@ -100,16 +101,14 @@ export function Stack() {
       className="relative overflow-hidden border-t border-border bg-wash"
     >
       <ColorBlob
-        className="right-0 bottom-0 translate-x-1/4 translate-y-1/3"
-        size={460}
-        opacity={0.17}
+        className="right-0 bottom-0 translate-x-[10%] translate-y-1/5"
+        size={500}
+        opacity={0.30}
       />
       <div className="relative mx-auto max-w-5xl px-6 py-24 sm:py-28">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-[200px_1fr] md:gap-16">
           <Reveal>
-            <h2 className="font-sans text-sm uppercase tracking-[0.2em] text-muted">
-              Stack
-            </h2>
+            <SectionLabel>Stack</SectionLabel>
           </Reveal>
           <div className="grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-4">
             {categories.map((category, i) => (
