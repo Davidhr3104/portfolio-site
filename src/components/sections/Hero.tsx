@@ -7,6 +7,10 @@ export function Hero() {
       id="top"
       className="relative mx-auto max-w-5xl overflow-hidden px-6 pt-44 pb-28 sm:pt-56 sm:pb-36"
     >
+      <div
+        aria-hidden="true"
+        className="grid-texture pointer-events-none absolute inset-0 -z-20"
+      />
       <ColorBlob
         className="top-0 right-0 -translate-y-1/5 translate-x-[10%]"
         size={560}

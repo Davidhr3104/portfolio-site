@@ -7,6 +7,7 @@
   --color-background: #faf8f4;
   --color-foreground: #1b1c18;
   --color-accent: #1e3a5f;
+  --color-gold: #8a6a32;
   --color-muted: #64707c;
   --color-border: #dee4ea;
   --color-surface: #ebf0f4;
@@ -25,6 +26,26 @@ body {
 ::selection {
   background: var(--color-accent);
   color: var(--color-background);
+}
+
+.grid-texture {
+  background-image: linear-gradient(
+      to right,
+      rgba(30, 58, 95, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(30, 58, 95, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: radial-gradient(
+    ellipse 80% 70% at 50% 30%,
+    black 40%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 80% 70% at 50% 30%,
+    black 40%,
+    transparent 100%
+  );
 }
 
 @keyframes marquee-scroll {
