@@ -1,11 +1,15 @@
 import type { IconType } from "react-icons";
 import {
   SiAnthropic,
+  SiClaudecode,
   SiN8N,
   SiMake,
   SiZapier,
   SiNextdotjs,
   SiTypescript,
+  SiJavascript,
+  SiHtml5,
+  SiCss,
   SiNodedotjs,
   SiSupabase,
   SiGithub,
@@ -31,6 +35,7 @@ const categories: { label: string; items: StackItem[] }[] = [
     label: "AI",
     items: [
       { label: "Claude / Anthropic API", icon: SiAnthropic },
+      { label: "Claude Code", icon: SiClaudecode },
       { label: "OpenAI" },
       { label: "Claude Cowork" },
       { label: "RAG pipelines", icon: LuDatabase },
@@ -53,6 +58,9 @@ const categories: { label: string; items: StackItem[] }[] = [
     items: [
       { label: "Next.js / React", icon: SiNextdotjs },
       { label: "TypeScript", icon: SiTypescript },
+      { label: "JavaScript", icon: SiJavascript },
+      { label: "HTML", icon: SiHtml5 },
+      { label: "CSS", icon: SiCss },
       { label: "Node.js", icon: SiNodedotjs },
       { label: "Supabase", icon: SiSupabase },
       { label: "GitHub", icon: SiGithub },
@@ -90,23 +98,30 @@ export function Stack() {
                   {category.label}
                 </h3>
                 <ul className="mt-4 space-y-2.5">
-                  {category.items.map((item) => (
-                    <li
-                      key={item.label}
-                      className="flex items-center gap-2.5 font-sans text-base leading-snug text-foreground/80"
-                    >
-                      <span className="flex h-4 w-4 shrink-0 items-center justify-center">
-                        {item.icon ? (
+                  {category.items.map((item) =>
+                    item.icon ? (
+                      <li
+                        key={item.label}
+                        className="flex items-center gap-2.5 font-sans text-base leading-snug text-foreground/80"
+                      >
+                        <span className="flex h-4 w-4 shrink-0 items-center justify-center">
                           <item.icon
                             aria-hidden="true"
                             size={14}
                             className="text-foreground/70"
                           />
-                        ) : null}
-                      </span>
-                      {item.label}
-                    </li>
-                  ))}
+                        </span>
+                        {item.label}
+                      </li>
+                    ) : (
+                      <li
+                        key={item.label}
+                        className="font-sans text-base leading-snug text-foreground/80"
+                      >
+                        {item.label}
+                      </li>
+                    )
+                  )}
                 </ul>
               </Reveal>
             ))}
