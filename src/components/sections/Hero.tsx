@@ -5,7 +5,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative mx-auto max-w-5xl overflow-hidden px-6 pt-44 pb-28 sm:pt-56 sm:pb-36"
+      className="relative mx-auto max-w-5xl overflow-hidden px-6 pt-44 pb-32 sm:pt-56 sm:pb-40 lg:pb-48"
     >
       <div
         aria-hidden="true"

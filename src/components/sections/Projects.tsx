@@ -28,7 +28,7 @@ export function Projects() {
         size={480}
         opacity={0.2}
       />
-      <div className="relative mx-auto max-w-5xl px-6 py-24 sm:py-28">
+      <div className="relative mx-auto max-w-5xl px-6 py-32 sm:py-40 lg:py-48">
         <Reveal>
           <SectionLabel>Selected Work</SectionLabel>
         </Reveal>

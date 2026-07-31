@@ -32,7 +32,7 @@ const steps = [
 export function HowIWork() {
   return (
     <section id="process" className="border-t border-border">
-      <div className="mx-auto max-w-5xl px-6 py-24 sm:py-28">
+      <div className="mx-auto max-w-5xl px-6 py-32 sm:py-40 lg:py-48">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-[200px_1fr] md:gap-16">
           <Reveal>
             <SectionLabel>How I Work</SectionLabel>
