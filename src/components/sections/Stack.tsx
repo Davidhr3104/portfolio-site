@@ -110,7 +110,7 @@ export function Stack() {
           <Reveal>
             <SectionLabel>Stack</SectionLabel>
           </Reveal>
-          <div className="grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-x-8 gap-y-12 lg:grid-cols-4">
             {categories.map((category, i) => (
               <Reveal key={category.label} delay={i * 60}>
                 <h3 className="font-sans text-sm uppercase tracking-[0.12em] text-accent">

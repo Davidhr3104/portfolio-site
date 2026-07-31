@@ -74,7 +74,7 @@ export function Projects() {
             const hasImage = projectImageExists(project.image);
             return (
               <Reveal key={project.index} as="article" delay={i * 60}>
-                <div className="group grid grid-cols-1 items-start gap-6 border-t border-border px-4 py-14 -mx-4 first:border-t-0 transition-colors duration-300 hover:bg-wash md:grid-cols-[64px_1fr_1fr] md:gap-12">
+                <div className="group grid grid-cols-1 items-start gap-6 border-t border-border px-4 py-14 -mx-4 first:border-t-0 transition-colors duration-300 hover:bg-wash lg:grid-cols-[64px_1fr_1fr] lg:gap-12">
                   <span className="font-serif text-2xl text-accent transition-transform duration-300 group-hover:translate-x-1">
                     {project.index}
                   </span>
