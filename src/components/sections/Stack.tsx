@@ -15,6 +15,13 @@ import {
   SiAirtable,
   SiZendesk,
 } from "react-icons/si";
+import {
+  LuDatabase,
+  LuLayers,
+  LuSlidersHorizontal,
+  LuPlug,
+  LuWebhook,
+} from "react-icons/lu";
 import { Reveal } from "@/components/Reveal";
 
 type StackItem = { label: string; icon?: IconType };
@@ -26,9 +33,9 @@ const categories: { label: string; items: StackItem[] }[] = [
       { label: "Claude / Anthropic API", icon: SiAnthropic },
       { label: "OpenAI" },
       { label: "Claude Cowork" },
-      { label: "RAG pipelines" },
-      { label: "Embeddings (Voyage AI)" },
-      { label: "Prompt design & evaluation" },
+      { label: "RAG pipelines", icon: LuDatabase },
+      { label: "Embeddings (Voyage AI)", icon: LuLayers },
+      { label: "Prompt design & evaluation", icon: LuSlidersHorizontal },
     ],
   },
   {
@@ -37,8 +44,8 @@ const categories: { label: string; items: StackItem[] }[] = [
       { label: "n8n", icon: SiN8N },
       { label: "Make", icon: SiMake },
       { label: "Zapier", icon: SiZapier },
-      { label: "Model Context Protocol (MCP)" },
-      { label: "Webhooks & scheduled jobs" },
+      { label: "Model Context Protocol (MCP)", icon: LuPlug },
+      { label: "Webhooks & scheduled jobs", icon: LuWebhook },
     ],
   },
   {

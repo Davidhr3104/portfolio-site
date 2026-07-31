@@ -25,7 +25,7 @@ export function Contact() {
                 href={UPWORK_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-10 inline-flex items-center gap-3 border border-foreground px-6 py-3 font-sans text-sm uppercase tracking-[0.15em] text-foreground transition-colors duration-300 hover:bg-foreground hover:text-background"
+                className="mt-10 inline-flex items-center gap-3 border border-foreground px-6 py-3 font-sans text-sm uppercase tracking-[0.15em] text-foreground outline-hidden transition-colors duration-300 hover:bg-foreground hover:text-background focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
               >
                 View my Upwork profile
                 <span aria-hidden="true">→</span>
