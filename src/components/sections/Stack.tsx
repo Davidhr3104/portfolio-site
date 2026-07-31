@@ -1,6 +1,7 @@
 import type { IconType } from "react-icons";
 import {
   SiAnthropic,
+  SiClaude,
   SiClaudecode,
   SiN8N,
   SiMake,
@@ -16,6 +17,7 @@ import {
   SiVercel,
   SiHubspot,
   SiNotion,
+  SiGoogle,
   SiAirtable,
   SiZendesk,
 } from "react-icons/si";
@@ -25,7 +27,9 @@ import {
   LuSlidersHorizontal,
   LuPlug,
   LuWebhook,
+  LuSlack,
 } from "react-icons/lu";
+import { TbBrandOpenai } from "react-icons/tb";
 import { Reveal } from "@/components/Reveal";
 
 type StackItem = { label: string; icon?: IconType };
@@ -36,8 +40,8 @@ const categories: { label: string; items: StackItem[] }[] = [
     items: [
       { label: "Claude / Anthropic API", icon: SiAnthropic },
       { label: "Claude Code", icon: SiClaudecode },
-      { label: "OpenAI" },
-      { label: "Claude Cowork" },
+      { label: "OpenAI", icon: TbBrandOpenai },
+      { label: "Claude Cowork", icon: SiClaude },
       { label: "RAG pipelines", icon: LuDatabase },
       { label: "Embeddings (Voyage AI)", icon: LuLayers },
       { label: "Prompt design & evaluation", icon: LuSlidersHorizontal },
@@ -73,8 +77,8 @@ const categories: { label: string; items: StackItem[] }[] = [
       { label: "HubSpot", icon: SiHubspot },
       { label: "GoHighLevel" },
       { label: "Notion", icon: SiNotion },
-      { label: "Slack" },
-      { label: "Google Workspace" },
+      { label: "Slack", icon: LuSlack },
+      { label: "Google Workspace", icon: SiGoogle },
       { label: "Airtable", icon: SiAirtable },
       { label: "Zendesk", icon: SiZendesk },
     ],
