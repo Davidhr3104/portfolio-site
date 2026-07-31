@@ -1,98 +1,7 @@
-import type { IconType } from "react-icons";
-import {
-  SiAnthropic,
-  SiClaude,
-  SiClaudecode,
-  SiN8N,
-  SiMake,
-  SiZapier,
-  SiNextdotjs,
-  SiTypescript,
-  SiJavascript,
-  SiHtml5,
-  SiCss,
-  SiNodedotjs,
-  SiSupabase,
-  SiGithub,
-  SiVercel,
-  SiHubspot,
-  SiNotion,
-  SiGoogle,
-  SiGooglegemini,
-  SiDocker,
-  SiAirtable,
-  SiZendesk,
-} from "react-icons/si";
-import {
-  LuDatabase,
-  LuLayers,
-  LuSlidersHorizontal,
-  LuPlug,
-  LuWebhook,
-  LuSlack,
-} from "react-icons/lu";
-import { TbBrandOpenai } from "react-icons/tb";
-import { GoHighLevel } from "@/components/icons/GoHighLevel";
-import { Antigravity } from "@/components/icons/Antigravity";
+import { stackCategories } from "@/data/stack";
 import { Reveal } from "@/components/Reveal";
 import { ColorBlob } from "@/components/ColorBlob";
 import { SectionLabel } from "@/components/SectionLabel";
-
-type StackItem = { label: string; icon?: IconType };
-
-const categories: { label: string; items: StackItem[] }[] = [
-  {
-    label: "AI",
-    items: [
-      { label: "Claude / Anthropic API", icon: SiAnthropic },
-      { label: "Claude Code", icon: SiClaudecode },
-      { label: "OpenAI", icon: TbBrandOpenai },
-      { label: "Gemini", icon: SiGooglegemini },
-      { label: "Claude Cowork", icon: SiClaude },
-      { label: "RAG pipelines", icon: LuDatabase },
-      { label: "Embeddings (Voyage AI)", icon: LuLayers },
-      { label: "Prompt design & evaluation", icon: LuSlidersHorizontal },
-    ],
-  },
-  {
-    label: "Automation",
-    items: [
-      { label: "n8n", icon: SiN8N },
-      { label: "Make", icon: SiMake },
-      { label: "Zapier", icon: SiZapier },
-      { label: "Model Context Protocol (MCP)", icon: LuPlug },
-      { label: "Webhooks & scheduled jobs", icon: LuWebhook },
-    ],
-  },
-  {
-    label: "Full-Stack",
-    items: [
-      { label: "Next.js / React", icon: SiNextdotjs },
-      { label: "TypeScript", icon: SiTypescript },
-      { label: "JavaScript", icon: SiJavascript },
-      { label: "HTML", icon: SiHtml5 },
-      { label: "CSS", icon: SiCss },
-      { label: "Node.js", icon: SiNodedotjs },
-      { label: "Supabase", icon: SiSupabase },
-      { label: "GitHub", icon: SiGithub },
-      { label: "Vercel", icon: SiVercel },
-      { label: "Docker", icon: SiDocker },
-      { label: "Antigravity", icon: Antigravity },
-    ],
-  },
-  {
-    label: "CRM & Productivity",
-    items: [
-      { label: "HubSpot", icon: SiHubspot },
-      { label: "GoHighLevel", icon: GoHighLevel },
-      { label: "Notion", icon: SiNotion },
-      { label: "Slack", icon: LuSlack },
-      { label: "Google Workspace", icon: SiGoogle },
-      { label: "Airtable", icon: SiAirtable },
-      { label: "Zendesk", icon: SiZendesk },
-    ],
-  },
-];
 
 export function Stack() {
   return (
@@ -103,7 +12,7 @@ export function Stack() {
       <ColorBlob
         className="right-0 bottom-0 translate-x-[10%] translate-y-1/5"
         size={500}
-        opacity={0.30}
+        opacity={0.3}
       />
       <div className="relative mx-auto max-w-5xl px-6 py-24 sm:py-28">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-[200px_1fr] md:gap-16">
@@ -111,7 +20,7 @@ export function Stack() {
             <SectionLabel>Stack</SectionLabel>
           </Reveal>
           <div className="grid grid-cols-2 gap-x-8 gap-y-12 lg:grid-cols-4">
-            {categories.map((category, i) => (
+            {stackCategories.map((category, i) => (
               <Reveal key={category.label} delay={i * 60}>
                 <h3 className="font-sans text-sm uppercase tracking-[0.12em] text-accent">
                   {category.label}

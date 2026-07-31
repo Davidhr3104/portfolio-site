@@ -1,5 +1,6 @@
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
+import { ToolMarquee } from "@/components/ToolMarquee";
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
 import { Projects } from "@/components/sections/Projects";
@@ -12,6 +13,7 @@ export default function Home() {
       <Nav />
       <main className="flex-1">
         <Hero />
+        <ToolMarquee />
         <About />
         <Projects />
         <Stack />
