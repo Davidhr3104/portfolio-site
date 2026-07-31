@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/Reveal";
+import { ColorBlob } from "@/components/ColorBlob";
 
 // TODO(David): replace with your real Upwork profile URL.
 const UPWORK_URL = "https://www.upwork.com/freelancers/~yourprofile";
@@ -6,8 +7,13 @@ const EMAIL = "andreshr4578@gmail.com";
 
 export function Contact() {
   return (
-    <section id="contact" className="border-t border-border">
-      <div className="mx-auto max-w-5xl px-6 py-24 sm:py-28">
+    <section id="contact" className="relative overflow-hidden border-t border-border">
+      <ColorBlob
+        className="top-0 left-0 -translate-x-1/3 -translate-y-1/4"
+        size={400}
+        opacity={0.13}
+      />
+      <div className="relative mx-auto max-w-5xl px-6 py-24 sm:py-28">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-[200px_1fr] md:gap-16">
           <Reveal>
             <h2 className="font-sans text-sm uppercase tracking-[0.2em] text-muted">

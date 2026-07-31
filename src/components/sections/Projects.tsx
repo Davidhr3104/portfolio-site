@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import Image from "next/image";
 import { Reveal } from "@/components/Reveal";
+import { ColorBlob } from "@/components/ColorBlob";
 
 type Project = {
   index: string;
@@ -56,8 +57,13 @@ function projectImageExists(filename: string) {
 
 export function Projects() {
   return (
-    <section id="projects" className="border-t border-border">
-      <div className="mx-auto max-w-5xl px-6 py-24 sm:py-28">
+    <section id="projects" className="relative overflow-hidden border-t border-border">
+      <ColorBlob
+        className="top-0 right-0 -translate-y-1/4 translate-x-1/4"
+        size={440}
+        opacity={0.11}
+      />
+      <div className="relative mx-auto max-w-5xl px-6 py-24 sm:py-28">
         <Reveal>
           <h2 className="font-sans text-sm uppercase tracking-[0.2em] text-muted">
             Selected Work

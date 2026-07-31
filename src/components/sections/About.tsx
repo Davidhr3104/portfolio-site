@@ -1,9 +1,18 @@
 import { Reveal } from "@/components/Reveal";
+import { ColorBlob } from "@/components/ColorBlob";
 
 export function About() {
   return (
-    <section id="about" className="border-t border-border bg-wash">
-      <div className="mx-auto max-w-5xl px-6 py-24 sm:py-28">
+    <section
+      id="about"
+      className="relative overflow-hidden border-t border-border bg-wash"
+    >
+      <ColorBlob
+        className="bottom-0 left-0 -translate-x-1/3 translate-y-1/3"
+        size={420}
+        opacity={0.16}
+      />
+      <div className="relative mx-auto max-w-5xl px-6 py-24 sm:py-28">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-[200px_1fr] md:gap-16">
           <Reveal>
             <h2 className="font-sans text-sm uppercase tracking-[0.2em] text-muted">
