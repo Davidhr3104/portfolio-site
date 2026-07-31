@@ -52,6 +52,15 @@ export function Hero() {
             </span>
           </div>
         </Reveal>
+        <Reveal delay={400}>
+          <a
+            href="#projects"
+            className="mt-10 inline-flex items-center gap-2 font-sans text-sm text-accent outline-hidden transition-colors hover:text-gold focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+          >
+            See the work
+            <span aria-hidden="true">↓</span>
+          </a>
+        </Reveal>
       </div>
     </section>
   );

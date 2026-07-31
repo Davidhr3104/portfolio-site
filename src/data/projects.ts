@@ -18,7 +18,7 @@ export const projects: Project[] = [
     index: "01",
     title: "Confidence-Scored Extraction Agent",
     description:
-      "Pulls structured fields from unstructured documents — invoices, contracts, resumes — and attaches a confidence score plus the exact source quote behind each value, so reviewers know at a glance what to trust and what to check by hand.",
+      "Reviewers were re-checking every field pulled from a document by hand, with no way to tell what actually needed a second look. This pulls structured fields from invoices, contracts, and resumes, attaching a confidence score and the exact source quote behind each value.",
     image: "confidence-extraction.png",
     tags: ["Claude API", "TypeScript", "Next.js"],
     caseStudy: {
@@ -35,7 +35,7 @@ export const projects: Project[] = [
     index: "02",
     title: "AI Lead Scoring System — 90% Less Qualification Time",
     description:
-      "Scores inbound leads against a firm's own qualification criteria in real time, cutting manual review time by 90% while keeping a clear, inspectable rationale attached to every score.",
+      "Reps were manually triaging inbound leads against criteria that lived in a spreadsheet, with no consistency between them. This scores every lead in real time against the firm's own rules — cutting qualification time by 90% with a rationale attached to each score.",
     image: "lead-scoring.png",
     tags: ["Claude API", "Supabase", "Next.js"],
     caseStudy: {
@@ -52,7 +52,7 @@ export const projects: Project[] = [
     index: "03",
     title: "Internal Knowledge Assistant",
     description:
-      "A retrieval-augmented assistant that answers only from a company's internal documentation, citing the exact source and passage behind every response — and declining to answer when nothing relevant is found.",
+      "Internal docs existed, but nobody trusted search enough to rely on it. This retrieval-augmented assistant answers only from that documentation, citing the exact source and passage — and refuses outright when nothing relevant is found.",
     image: "rag-assistant.png",
     tags: ["Claude API", "Embeddings", "Supabase"],
     caseStudy: {
@@ -69,7 +69,7 @@ export const projects: Project[] = [
     index: "04",
     title: "Multi-System Sync Dashboard",
     description:
-      "Reconciles records across CRM, billing, and operations systems, surfaces drift field by field, and tracks which discrepancies have been reviewed versus resolved at the source.",
+      "A business running multiple systems had no way to catch when records drifted out of sync. This reconciles CRM, billing, and operations data, surfacing drift field by field and tracking what's been reviewed versus resolved.",
     image: "sync-dashboard.png",
     tags: ["Next.js", "Supabase", "TypeScript"],
     caseStudy: {
@@ -86,7 +86,7 @@ export const projects: Project[] = [
     index: "05",
     title: "CEO Inbox Automation — $800/mo Recovered",
     description:
-      "Triages and prioritizes an executive inbox automatically, surfacing what matters and drafting responses — recovering roughly $800 per month in previously missed follow-ups and opportunities.",
+      "A high-volume inbox meant real opportunities were getting buried under routine messages. This triages and prioritizes automatically, drafting responses for the routine cases — recovering roughly $800/month in previously missed follow-ups.",
     image: "ceo-inbox.png",
     tags: ["Claude API", "n8n", "Node.js"],
     caseStudy: {

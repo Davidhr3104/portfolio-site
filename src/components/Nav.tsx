@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 const links = [
-  { href: "#about", label: "About" },
-  { href: "#projects", label: "Projects" },
-  { href: "#impact", label: "Impact" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#about", label: "About" },
+  { href: "/#projects", label: "Projects" },
+  { href: "/#impact", label: "Impact" },
+  { href: "/notes", label: "Notes" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 const linkClass =
@@ -18,21 +20,21 @@ export function Nav() {
   return (
     <header className="fixed top-0 inset-x-0 z-50 border-b border-border bg-background/85 backdrop-blur-sm">
       <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-        <a
-          href="#top"
+        <Link
+          href="/"
           onClick={() => setOpen(false)}
           className="font-serif text-base tracking-tight text-foreground transition-colors duration-200 hover:text-accent outline-hidden focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
         >
           David Herrera
-        </a>
+        </Link>
 
         <div className="flex items-center gap-5">
           <ul className="hidden items-center gap-x-6 md:flex">
             {links.map((link) => (
               <li key={link.href}>
-                <a href={link.href} className={linkClass}>
+                <Link href={link.href} className={linkClass}>
                   {link.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -56,13 +58,13 @@ export function Nav() {
         >
           {links.map((link) => (
             <li key={link.href} className="py-2">
-              <a
+              <Link
                 href={link.href}
                 onClick={() => setOpen(false)}
                 className={`${linkClass} block`}
               >
                 {link.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>

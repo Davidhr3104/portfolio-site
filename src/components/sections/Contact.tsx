@@ -28,6 +28,9 @@ export function Contact() {
                 Currently available for select freelance and contract
                 engagements.
               </p>
+              <p className="mt-3 font-sans text-sm text-muted">
+                Usually responds within 24 hours.
+              </p>
             </Reveal>
             <Reveal delay={100}>
               <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
