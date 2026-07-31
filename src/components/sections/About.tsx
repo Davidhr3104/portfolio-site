@@ -7,17 +7,17 @@ const pillars = [
   {
     icon: LuGauge,
     title: "Confidence-scored AI",
-    text: "Every output carries a confidence score — never a blind answer.",
+    text: "If the model isn't sure, you'll know before it matters.",
   },
   {
     icon: LuUserCheck,
     title: "Human-in-the-loop by design",
-    text: "High-stakes decisions always go through human review.",
+    text: "The decisions that can hurt you always get a second pair of eyes.",
   },
   {
     icon: LuRocket,
     title: "Full-stack delivery",
-    text: "From architecture to deploy, no hand-offs in between.",
+    text: "One person, start to finish — no handoffs where things get lost.",
   },
 ];
 

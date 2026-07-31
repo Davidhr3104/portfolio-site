@@ -40,6 +40,10 @@ export function Hero() {
             extraction, automated systems, and full-stack products
             engineered for trust, not demos.
           </p>
+          <p className="mt-4 max-w-xl font-sans text-base text-muted">
+            For founders and teams who need AI they can actually rely on,
+            not just impress with.
+          </p>
         </Reveal>
         <Reveal delay={320}>
           <div className="mt-8 inline-flex items-center gap-2.5">

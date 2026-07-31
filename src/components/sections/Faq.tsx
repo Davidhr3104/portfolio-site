@@ -23,7 +23,7 @@ const faqs = [
   {
     question: "What's your tech stack preference?",
     answer:
-      "Claude API/Claude Code, Next.js, Supabase, and n8n/Make for automation — but I pick the right tool for the problem, not just what I know.",
+      "Whatever gets a reliable system shipped fastest — usually Claude, Next.js, and Supabase, but I don't force a stack where it doesn't fit the problem.",
   },
 ];
 

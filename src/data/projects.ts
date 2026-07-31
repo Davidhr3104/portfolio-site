@@ -18,7 +18,7 @@ export const projects: Project[] = [
     index: "01",
     title: "Confidence-Scored Extraction Agent",
     description:
-      "Reviewers were re-checking every field pulled from a document by hand, with no way to tell what actually needed a second look. This pulls structured fields from invoices, contracts, and resumes, attaching a confidence score and the exact source quote behind each value.",
+      "Teams pulling data from documents by hand had no way to know what was actually safe to trust. This extracts structured fields from invoices, contracts, and resumes — scoring each value's confidence and citing the exact source it came from.",
     image: "confidence-extraction.png",
     tags: ["Claude API", "TypeScript", "Next.js"],
     caseStudy: {
@@ -35,7 +35,7 @@ export const projects: Project[] = [
     index: "02",
     title: "AI Lead Scoring System — 90% Less Qualification Time",
     description:
-      "Reps were manually triaging inbound leads against criteria that lived in a spreadsheet, with no consistency between them. This scores every lead in real time against the firm's own rules — cutting qualification time by 90% with a rationale attached to each score.",
+      "A sales team was losing hours a week manually reviewing every inbound lead against criteria that lived in a spreadsheet. This scores and filters leads in real time against the firm's own rules, attaching the reasoning behind each call — cutting qualification time by 90%.",
     image: "lead-scoring.png",
     tags: ["Claude API", "Supabase", "Next.js"],
     caseStudy: {
@@ -52,7 +52,7 @@ export const projects: Project[] = [
     index: "03",
     title: "Internal Knowledge Assistant",
     description:
-      "Internal docs existed, but nobody trusted search enough to rely on it. This retrieval-augmented assistant answers only from that documentation, citing the exact source and passage — and refuses outright when nothing relevant is found.",
+      "Answers to internal questions lived scattered across documents nobody had time to search through. This retrieval-augmented assistant answers only from that documentation, citing the exact source and passage — and says so when nothing relevant is found.",
     image: "rag-assistant.png",
     tags: ["Claude API", "Embeddings", "Supabase"],
     caseStudy: {
@@ -86,7 +86,7 @@ export const projects: Project[] = [
     index: "05",
     title: "CEO Inbox Automation — $800/mo Recovered",
     description:
-      "A high-volume inbox meant real opportunities were getting buried under routine messages. This triages and prioritizes automatically, drafting responses for the routine cases — recovering roughly $800/month in previously missed follow-ups.",
+      "An executive was spending hours a week just sorting through email before getting to anything that mattered. This classifies and prioritizes messages automatically, drafting responses for the routine ones and surfacing the rest — recovering roughly $800/month in previously missed follow-ups.",
     image: "ceo-inbox.png",
     tags: ["Claude API", "n8n", "Node.js"],
     caseStudy: {

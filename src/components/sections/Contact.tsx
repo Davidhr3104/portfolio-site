@@ -30,6 +30,10 @@ export function Contact() {
               <p className="mt-3 font-sans text-sm text-muted">
                 Usually responds within 24 hours.
               </p>
+              <p className="mt-1 font-sans text-sm text-muted">
+                Based in Bogotá, Colombia — strong overlap with US business
+                hours.
+              </p>
             </Reveal>
             <Reveal delay={100}>
               <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
