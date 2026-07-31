@@ -5,6 +5,8 @@ import {
   SiMake,
   SiZapier,
   SiNextdotjs,
+  SiTypescript,
+  SiNodedotjs,
   SiSupabase,
   SiGithub,
   SiVercel,
@@ -43,8 +45,8 @@ const categories: { label: string; items: StackItem[] }[] = [
     label: "Full-Stack",
     items: [
       { label: "Next.js / React", icon: SiNextdotjs },
-      { label: "TypeScript" },
-      { label: "Node.js" },
+      { label: "TypeScript", icon: SiTypescript },
+      { label: "Node.js", icon: SiNodedotjs },
       { label: "Supabase", icon: SiSupabase },
       { label: "GitHub", icon: SiGithub },
       { label: "Vercel", icon: SiVercel },
@@ -66,7 +68,7 @@ const categories: { label: string; items: StackItem[] }[] = [
 
 export function Stack() {
   return (
-    <section id="stack" className="border-t border-border">
+    <section id="stack" className="border-t border-border bg-wash">
       <div className="mx-auto max-w-5xl px-6 py-24 sm:py-28">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-[200px_1fr] md:gap-16">
           <Reveal>
