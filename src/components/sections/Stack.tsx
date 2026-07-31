@@ -18,6 +18,8 @@ import {
   SiHubspot,
   SiNotion,
   SiGoogle,
+  SiGooglegemini,
+  SiDocker,
   SiAirtable,
   SiZendesk,
 } from "react-icons/si";
@@ -30,6 +32,7 @@ import {
   LuSlack,
 } from "react-icons/lu";
 import { TbBrandOpenai } from "react-icons/tb";
+import { GoHighLevel } from "@/components/icons/GoHighLevel";
 import { Reveal } from "@/components/Reveal";
 
 type StackItem = { label: string; icon?: IconType };
@@ -41,6 +44,7 @@ const categories: { label: string; items: StackItem[] }[] = [
       { label: "Claude / Anthropic API", icon: SiAnthropic },
       { label: "Claude Code", icon: SiClaudecode },
       { label: "OpenAI", icon: TbBrandOpenai },
+      { label: "Gemini", icon: SiGooglegemini },
       { label: "Claude Cowork", icon: SiClaude },
       { label: "RAG pipelines", icon: LuDatabase },
       { label: "Embeddings (Voyage AI)", icon: LuLayers },
@@ -69,13 +73,15 @@ const categories: { label: string; items: StackItem[] }[] = [
       { label: "Supabase", icon: SiSupabase },
       { label: "GitHub", icon: SiGithub },
       { label: "Vercel", icon: SiVercel },
+      { label: "Docker", icon: SiDocker },
+      { label: "Antigravity" },
     ],
   },
   {
     label: "CRM & Productivity",
     items: [
       { label: "HubSpot", icon: SiHubspot },
-      { label: "GoHighLevel" },
+      { label: "GoHighLevel", icon: GoHighLevel },
       { label: "Notion", icon: SiNotion },
       { label: "Slack", icon: LuSlack },
       { label: "Google Workspace", icon: SiGoogle },

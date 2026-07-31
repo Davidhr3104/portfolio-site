@@ -2,6 +2,7 @@ import { Reveal } from "@/components/Reveal";
 
 // TODO(David): replace with your real Upwork profile URL.
 const UPWORK_URL = "https://www.upwork.com/freelancers/~yourprofile";
+const EMAIL = "andreshr4578@gmail.com";
 
 export function Contact() {
   return (
@@ -21,15 +22,23 @@ export function Contact() {
               </p>
             </Reveal>
             <Reveal delay={100}>
-              <a
-                href={UPWORK_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-10 inline-flex items-center gap-3 border border-foreground px-6 py-3 font-sans text-sm uppercase tracking-[0.15em] text-foreground outline-hidden transition-colors duration-300 hover:bg-foreground hover:text-background focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
-              >
-                View my Upwork profile
-                <span aria-hidden="true">→</span>
-              </a>
+              <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+                <a
+                  href={UPWORK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 border border-foreground px-6 py-3 font-sans text-sm uppercase tracking-[0.15em] text-foreground outline-hidden transition-colors duration-300 hover:bg-foreground hover:text-background focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+                >
+                  View my Upwork profile
+                  <span aria-hidden="true">→</span>
+                </a>
+                <a
+                  href={`mailto:${EMAIL}`}
+                  className="font-sans text-sm text-accent underline decoration-accent/30 underline-offset-4 outline-hidden transition-colors duration-300 hover:decoration-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+                >
+                  {EMAIL}
+                </a>
+              </div>
             </Reveal>
           </div>
         </div>
