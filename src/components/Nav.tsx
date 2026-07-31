@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { ThemeToggle } from "@/components/ThemeToggle";
 
 const links = [
   { href: "#about", label: "About" },
@@ -37,8 +36,6 @@ export function Nav() {
               </li>
             ))}
           </ul>
-
-          <ThemeToggle />
 
           <button
             type="button"

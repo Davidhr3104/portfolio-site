@@ -4,38 +4,17 @@
   --font-sans: var(--font-inter);
   --font-serif: var(--font-fraunces);
 
-  --color-background: var(--bg);
-  --color-foreground: var(--fg);
-  --color-accent: var(--accent);
-  --color-gold: var(--gold);
-  --color-muted: var(--muted);
-  --color-border: var(--border);
-  --color-surface: var(--surface);
-  --color-wash: var(--wash);
+  --color-background: #14171c;
+  --color-foreground: #eeece6;
+  --color-accent: #7fa8d6;
+  --color-gold: #cda866;
+  --color-muted: #8b95a0;
+  --color-border: #262b32;
+  --color-surface: #1b1f25;
+  --color-wash: #171b21;
 }
 
 :root {
-  --bg: #faf8f4;
-  --fg: #1b1c18;
-  --accent: #1e3a5f;
-  --gold: #8a6a32;
-  --muted: #64707c;
-  --border: #dee4ea;
-  --surface: #ebf0f4;
-  --wash: #eef3f8;
-  --blob-rgb: 88, 133, 182;
-  --grid-rgb: 30, 58, 95;
-}
-
-:root.dark {
-  --bg: #14171c;
-  --fg: #eeece6;
-  --accent: #7fa8d6;
-  --gold: #cda866;
-  --muted: #8b95a0;
-  --border: #262b32;
-  --surface: #1b1f25;
-  --wash: #171b21;
   --blob-rgb: 100, 140, 190;
   --grid-rgb: 170, 195, 220;
 }
@@ -47,7 +26,6 @@ html {
 body {
   background: var(--color-background);
   color: var(--color-foreground);
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 ::selection {
