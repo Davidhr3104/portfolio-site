@@ -2,8 +2,7 @@ import { Reveal } from "@/components/Reveal";
 import { ColorBlob } from "@/components/ColorBlob";
 import { SectionLabel } from "@/components/SectionLabel";
 
-// TODO(David): replace with your real Upwork profile URL.
-const UPWORK_URL = "https://www.upwork.com/freelancers/~yourprofile";
+const UPWORK_URL = "https://www.upwork.com/freelancers/~01cbe720b774ffd4c6";
 // TODO(David): replace "#" with your Calendly link (or swap this href back
 // to a mailto: if you'd rather take the first message by email).
 const CALENDLY_URL = "#";
