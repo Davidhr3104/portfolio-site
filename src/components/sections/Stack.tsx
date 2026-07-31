@@ -1,36 +1,65 @@
+import type { IconType } from "react-icons";
+import {
+  SiAnthropic,
+  SiN8N,
+  SiMake,
+  SiZapier,
+  SiNextdotjs,
+  SiSupabase,
+  SiGithub,
+  SiVercel,
+  SiHubspot,
+  SiNotion,
+  SiAirtable,
+  SiZendesk,
+} from "react-icons/si";
 import { Reveal } from "@/components/Reveal";
 
-const categories = [
+type StackItem = { label: string; icon?: IconType };
+
+const categories: { label: string; items: StackItem[] }[] = [
   {
     label: "AI",
     items: [
-      "Claude / Anthropic API",
-      "Agentic tool-use workflows",
-      "RAG pipelines",
-      "Embeddings (Voyage AI)",
-      "Prompt design & evaluation",
+      { label: "Claude / Anthropic API", icon: SiAnthropic },
+      { label: "OpenAI" },
+      { label: "Claude Cowork" },
+      { label: "RAG pipelines" },
+      { label: "Embeddings (Voyage AI)" },
+      { label: "Prompt design & evaluation" },
     ],
   },
   {
     label: "Automation",
     items: [
-      "n8n",
-      "Model Context Protocol (MCP)",
-      "Webhooks & scheduled jobs",
-      "Zapier",
+      { label: "n8n", icon: SiN8N },
+      { label: "Make", icon: SiMake },
+      { label: "Zapier", icon: SiZapier },
+      { label: "Model Context Protocol (MCP)" },
+      { label: "Webhooks & scheduled jobs" },
     ],
   },
   {
     label: "Full-Stack",
-    items: ["TypeScript", "Next.js / React", "Node.js", "PostgreSQL / Supabase"],
+    items: [
+      { label: "Next.js / React", icon: SiNextdotjs },
+      { label: "TypeScript" },
+      { label: "Node.js" },
+      { label: "Supabase", icon: SiSupabase },
+      { label: "GitHub", icon: SiGithub },
+      { label: "Vercel", icon: SiVercel },
+    ],
   },
   {
-    label: "CRM",
+    label: "CRM & Productivity",
     items: [
-      "HubSpot",
-      "GoHighLevel",
-      "Custom CRM integrations",
-      "Data sync & reconciliation",
+      { label: "HubSpot", icon: SiHubspot },
+      { label: "GoHighLevel" },
+      { label: "Notion", icon: SiNotion },
+      { label: "Slack" },
+      { label: "Google Workspace" },
+      { label: "Airtable", icon: SiAirtable },
+      { label: "Zendesk", icon: SiZendesk },
     ],
   },
 ];
@@ -51,13 +80,22 @@ export function Stack() {
                 <h3 className="font-sans text-sm uppercase tracking-[0.12em] text-accent">
                   {category.label}
                 </h3>
-                <ul className="mt-4 space-y-2">
+                <ul className="mt-4 space-y-2.5">
                   {category.items.map((item) => (
                     <li
-                      key={item}
-                      className="font-sans text-base leading-snug text-foreground/80"
+                      key={item.label}
+                      className="flex items-center gap-2.5 font-sans text-base leading-snug text-foreground/80"
                     >
-                      {item}
+                      <span className="flex h-4 w-4 shrink-0 items-center justify-center">
+                        {item.icon ? (
+                          <item.icon
+                            aria-hidden="true"
+                            size={14}
+                            className="text-foreground/70"
+                          />
+                        ) : null}
+                      </span>
+                      {item.label}
                     </li>
                   ))}
                 </ul>

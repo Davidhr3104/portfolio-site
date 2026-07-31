@@ -14,10 +14,18 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+const title = "David Herrera — AI Systems Architect";
+const description =
+  "I build AI agents you can actually audit — evidence-backed extraction, automated systems, and full-stack products engineered for trust, not demos.";
+
 export const metadata: Metadata = {
-  title: "David Herrera — AI Systems Architect",
-  description:
-    "AI agents you can audit — evidence-backed extraction, automated systems, and full-stack products engineered for trust, not demos.",
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    type: "website",
+  },
 };
 
 export default function RootLayout({
