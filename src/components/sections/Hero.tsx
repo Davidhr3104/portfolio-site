@@ -43,6 +43,17 @@ export function Hero() {
           for trust, not demos.
         </p>
       </Reveal>
+      <Reveal delay={320}>
+        <div className="mt-8 inline-flex items-center gap-2.5">
+          <span className="relative flex h-2 w-2" aria-hidden="true">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#5f9c76] opacity-60" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#5f9c76]" />
+          </span>
+          <span className="font-sans text-sm text-muted">
+            Currently available — limited capacity
+          </span>
+        </div>
+      </Reveal>
     </section>
   );
 }

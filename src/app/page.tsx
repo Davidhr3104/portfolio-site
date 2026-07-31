@@ -1,25 +1,21 @@
-import { Nav } from "@/components/Nav";
-import { Footer } from "@/components/Footer";
 import { ToolMarquee } from "@/components/ToolMarquee";
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
+import { HowIWork } from "@/components/sections/HowIWork";
 import { Projects } from "@/components/sections/Projects";
-import { Stack } from "@/components/sections/Stack";
+import { Impact } from "@/components/sections/Impact";
 import { Contact } from "@/components/sections/Contact";
 
 export default function Home() {
   return (
-    <div className="flex min-h-full flex-1 flex-col">
-      <Nav />
-      <main className="flex-1">
-        <Hero />
-        <ToolMarquee />
-        <About />
-        <Projects />
-        <Stack />
-        <Contact />
-      </main>
-      <Footer />
-    </div>
+    <>
+      <Hero />
+      <ToolMarquee />
+      <About />
+      <HowIWork />
+      <Projects />
+      <Impact />
+      <Contact />
+    </>
   );
 }

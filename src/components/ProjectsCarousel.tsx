@@ -5,6 +5,7 @@ import type { PointerEvent as ReactPointerEvent } from "react";
 import Image from "next/image";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import type { Project } from "@/data/projects";
+import { CaseModal } from "@/components/CaseModal";
 
 type Item = Project & { hasImage: boolean };
 
@@ -22,7 +23,8 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [active, setActive] = useState(0);
-  const dragState = useRef({ startX: 0, startScroll: 0, dragging: false });
+  const [caseOpen, setCaseOpen] = useState(false);
+  const dragState = useRef({ startX: 0, startScroll: 0, dragging: false, moved: false });
 
   useEffect(() => {
     const track = trackRef.current;
@@ -42,6 +44,21 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
     return () => observer.disconnect();
   }, [projects.length]);
 
+  // Native (non-passive) wheel listener so vertical mouse-wheel scroll
+  // moves the carousel horizontally instead of scrolling the page --
+  // React's synthetic onWheel is passive by default and can't preventDefault.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    function onWheel(e: WheelEvent) {
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      e.preventDefault();
+      track!.scrollLeft += e.deltaY;
+    }
+    track.addEventListener("wheel", onWheel, { passive: false });
+    return () => track.removeEventListener("wheel", onWheel);
+  }, []);
+
   function scrollToIndex(i: number) {
     const clamped = Math.max(0, Math.min(projects.length - 1, i));
     cardRefs.current[clamped]?.scrollIntoView({
@@ -57,18 +74,37 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
       startX: e.clientX,
       startScroll: trackRef.current.scrollLeft,
       dragging: true,
+      moved: false,
     };
     trackRef.current.setPointerCapture(e.pointerId);
   }
 
   function handlePointerMove(e: ReactPointerEvent<HTMLDivElement>) {
     if (!dragState.current.dragging || !trackRef.current) return;
-    trackRef.current.scrollLeft =
-      dragState.current.startScroll - (e.clientX - dragState.current.startX);
+    const delta = e.clientX - dragState.current.startX;
+    if (Math.abs(delta) > 5) dragState.current.moved = true;
+    trackRef.current.scrollLeft = dragState.current.startScroll - delta;
   }
 
-  function handlePointerUp() {
+  function handlePointerUp(e: ReactPointerEvent<HTMLDivElement>) {
     dragState.current.dragging = false;
+    if (trackRef.current?.hasPointerCapture(e.pointerId)) {
+      trackRef.current.releasePointerCapture(e.pointerId);
+    }
+  }
+
+  function handleCardClick(i: number) {
+    if (dragState.current.moved) {
+      // This click was the tail end of a drag, not an intentional select/open.
+      dragState.current.moved = false;
+      return;
+    }
+    if (i !== active) {
+      setActive(i);
+      scrollToIndex(i);
+    } else {
+      setCaseOpen(true);
+    }
   }
 
   const activeProject = projects[active];
@@ -110,24 +146,27 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerUp}
-        className="no-scrollbar mt-6 flex cursor-grab gap-5 overflow-x-auto scroll-smooth pb-2 active:cursor-grabbing"
-        style={{ scrollSnapType: "x mandatory" }}
+        className="no-scrollbar mt-10 flex cursor-grab items-center gap-6 overflow-x-auto scroll-smooth px-4 py-6 active:cursor-grabbing"
+        style={{ scrollSnapType: "x proximity" }}
       >
         {projects.map((project, i) => (
           <button
-            key={project.index}
+            key={project.slug}
+            type="button"
             ref={(el) => {
               cardRefs.current[i] = el;
             }}
-            type="button"
-            onClick={() => scrollToIndex(i)}
+            onClick={() => handleCardClick(i)}
+            onMouseEnter={() => setActive(i)}
             style={{ scrollSnapAlign: "center" }}
-            aria-label={`View ${project.title}`}
+            aria-label={
+              i === active ? `Open case study for ${project.title}` : `View ${project.title}`
+            }
             aria-current={i === active}
-            className={`group relative aspect-3/4 w-[240px] shrink-0 overflow-hidden border outline-hidden transition-all duration-300 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:w-[280px] ${
+            className={`group relative aspect-3/4 w-[220px] shrink-0 origin-center overflow-hidden border outline-hidden transition-all duration-300 ease-out focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:w-[260px] ${
               i === active
-                ? "border-accent opacity-100"
-                : "border-border opacity-60 hover:opacity-90"
+                ? "z-10 scale-110 border-accent opacity-100"
+                : "scale-[0.85] border-border opacity-45 hover:opacity-70"
             }`}
           >
             {project.hasImage ? (
@@ -135,7 +174,7 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
                 src={`/projects/${project.image}`}
                 alt={`${project.title} — screenshot`}
                 fill
-                sizes="280px"
+                sizes="260px"
                 className="object-cover"
               />
             ) : (
@@ -157,7 +196,7 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
         ))}
       </div>
 
-      <div className="mt-10 max-w-2xl">
+      <div className="mt-6 max-w-2xl">
         <ul className="flex flex-wrap gap-2">
           {activeProject.tags.map((tag) => (
             <li
@@ -174,7 +213,20 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
         <p className="mt-4 font-sans text-base leading-relaxed text-foreground/80">
           {activeProject.description}
         </p>
+        <button
+          type="button"
+          onClick={() => setCaseOpen(true)}
+          className="mt-5 inline-flex items-center gap-2 font-sans text-sm uppercase tracking-[0.12em] text-accent outline-hidden transition-colors hover:text-gold focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+        >
+          View full case
+          <span aria-hidden="true">→</span>
+        </button>
       </div>
+
+      <CaseModal
+        project={caseOpen ? activeProject : null}
+        onClose={() => setCaseOpen(false)}
+      />
     </div>
   );
 }

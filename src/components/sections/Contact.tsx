@@ -4,6 +4,9 @@ import { SectionLabel } from "@/components/SectionLabel";
 
 // TODO(David): replace with your real Upwork profile URL.
 const UPWORK_URL = "https://www.upwork.com/freelancers/~yourprofile";
+// TODO(David): replace "#" with your Calendly link (or swap this href back
+// to a mailto: if you'd rather take the first message by email).
+const CALENDLY_URL = "#";
 const EMAIL = "andreshr4578@gmail.com";
 
 export function Contact() {
@@ -28,6 +31,13 @@ export function Contact() {
             </Reveal>
             <Reveal delay={100}>
               <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+                <a
+                  href={CALENDLY_URL}
+                  className="inline-flex items-center gap-3 border border-accent px-6 py-3 font-sans text-sm uppercase tracking-[0.15em] text-accent outline-hidden transition-colors duration-300 hover:bg-accent hover:text-background focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+                >
+                  Get in touch
+                  <span aria-hidden="true">→</span>
+                </a>
                 <a
                   href={UPWORK_URL}
                   target="_blank"
