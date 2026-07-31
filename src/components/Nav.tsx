@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const links = [
   { href: "#about", label: "About" },
@@ -26,25 +27,29 @@ export function Nav() {
           David Herrera
         </a>
 
-        <ul className="hidden items-center gap-x-6 md:flex">
-          {links.map((link) => (
-            <li key={link.href}>
-              <a href={link.href} className={linkClass}>
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <div className="flex items-center gap-5">
+          <ul className="hidden items-center gap-x-6 md:flex">
+            {links.map((link) => (
+              <li key={link.href}>
+                <a href={link.href} className={linkClass}>
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
 
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          className={`${linkClass} md:hidden`}
-        >
-          {open ? "Close" : "Menu"}
-        </button>
+          <ThemeToggle />
+
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            className={`${linkClass} md:hidden`}
+          >
+            {open ? "Close" : "Menu"}
+          </button>
+        </div>
       </nav>
 
       {open ? (

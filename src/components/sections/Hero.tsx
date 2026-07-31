@@ -23,7 +23,7 @@ export function Hero() {
             className="pointer-events-none absolute -inset-x-12 -inset-y-16 -z-10 sm:-inset-x-24"
             style={{
               background:
-                "radial-gradient(ellipse 60% 70% at 30% 45%, rgba(88,133,182,0.16), rgba(88,133,182,0) 70%)",
+                "radial-gradient(ellipse 60% 70% at 30% 45%, rgba(var(--blob-rgb),0.16), rgba(var(--blob-rgb),0) 70%)",
             }}
           />
           <h1 className="font-serif text-[clamp(2.75rem,9vw,6.5rem)] leading-[1.02] tracking-tight text-foreground">

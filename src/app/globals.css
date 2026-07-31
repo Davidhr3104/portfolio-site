@@ -4,14 +4,40 @@
   --font-sans: var(--font-inter);
   --font-serif: var(--font-fraunces);
 
-  --color-background: #faf8f4;
-  --color-foreground: #1b1c18;
-  --color-accent: #1e3a5f;
-  --color-gold: #8a6a32;
-  --color-muted: #64707c;
-  --color-border: #dee4ea;
-  --color-surface: #ebf0f4;
-  --color-wash: #eef3f8;
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+  --color-accent: var(--accent);
+  --color-gold: var(--gold);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-surface: var(--surface);
+  --color-wash: var(--wash);
+}
+
+:root {
+  --bg: #faf8f4;
+  --fg: #1b1c18;
+  --accent: #1e3a5f;
+  --gold: #8a6a32;
+  --muted: #64707c;
+  --border: #dee4ea;
+  --surface: #ebf0f4;
+  --wash: #eef3f8;
+  --blob-rgb: 88, 133, 182;
+  --grid-rgb: 30, 58, 95;
+}
+
+:root.dark {
+  --bg: #14171c;
+  --fg: #eeece6;
+  --accent: #7fa8d6;
+  --gold: #cda866;
+  --muted: #8b95a0;
+  --border: #262b32;
+  --surface: #1b1f25;
+  --wash: #171b21;
+  --blob-rgb: 100, 140, 190;
+  --grid-rgb: 170, 195, 220;
 }
 
 html {
@@ -21,6 +47,7 @@ html {
 body {
   background: var(--color-background);
   color: var(--color-foreground);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 ::selection {
@@ -31,10 +58,10 @@ body {
 .grid-texture {
   background-image: linear-gradient(
       to right,
-      rgba(30, 58, 95, 0.05) 1px,
+      rgba(var(--grid-rgb), 0.05) 1px,
       transparent 1px
     ),
-    linear-gradient(to bottom, rgba(30, 58, 95, 0.05) 1px, transparent 1px);
+    linear-gradient(to bottom, rgba(var(--grid-rgb), 0.05) 1px, transparent 1px);
   background-size: 44px 44px;
   -webkit-mask-image: radial-gradient(
     ellipse 80% 70% at 50% 30%,
