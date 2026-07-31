@@ -50,38 +50,38 @@ body {
   mask-image: linear-gradient(to bottom, black 0%, black 80%, transparent 100%);
 }
 
-@keyframes marquee-scroll {
+@keyframes marquee-scroll-y {
   from {
-    transform: translateX(0);
+    transform: translateY(0);
   }
   to {
-    transform: translateX(-50%);
+    transform: translateY(-50%);
   }
 }
 
-.marquee-track {
-  animation: marquee-scroll 50s linear infinite;
+.marquee-track-y {
+  animation: marquee-scroll-y 32s linear infinite;
 }
 
-.marquee-mask {
+.marquee-mask-y {
   -webkit-mask-image: linear-gradient(
-    to right,
+    to bottom,
     transparent,
-    black 8%,
-    black 92%,
+    black 15%,
+    black 85%,
     transparent
   );
   mask-image: linear-gradient(
-    to right,
+    to bottom,
     transparent,
-    black 8%,
-    black 92%,
+    black 15%,
+    black 85%,
     transparent
   );
 }
 
 @media (hover: hover) {
-  .marquee-track:hover {
+  .marquee-track-y:hover {
     animation-play-state: paused;
   }
 }
