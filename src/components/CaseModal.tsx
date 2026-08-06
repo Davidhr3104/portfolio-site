@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { LuX } from "react-icons/lu";
-import type { Project } from "@/data/projects";
+import Image from "next/image";
+import { LuX, LuZoomIn } from "react-icons/lu";
+import type { Item } from "@/components/ProjectsCarousel";
+import { useFocusTrap } from "@/lib/useFocusTrap";
 
 const sections = [
   { key: "problem", label: "Problem" },
@@ -15,10 +17,21 @@ export function CaseModal({
   project,
   onClose,
 }: {
-  project: Project | null;
+  project: Item | null;
   onClose: () => void;
 }) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const zoomRef = useRef<HTMLDivElement>(null);
+  const [zoomOpen, setZoomOpen] = useState(false);
+  const zoomOpenRef = useRef(zoomOpen);
+
+  useEffect(() => {
+    zoomOpenRef.current = zoomOpen;
+  }, [zoomOpen]);
+
+  useFocusTrap(modalRef, !!project && !zoomOpen);
+  useFocusTrap(zoomRef, !!(zoomOpen && project?.hasImage));
 
   useEffect(() => {
     if (!project) return;
@@ -28,7 +41,12 @@ export function CaseModal({
     closeButtonRef.current?.focus();
 
     function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
+      if (e.key !== "Escape") return;
+      if (zoomOpenRef.current) {
+        setZoomOpen(false);
+      } else {
+        onClose();
+      }
     }
     document.addEventListener("keydown", onKeyDown);
 
@@ -40,17 +58,23 @@ export function CaseModal({
 
   if (!project || typeof document === "undefined") return null;
 
+  function closeModal() {
+    setZoomOpen(false);
+    onClose();
+  }
+
   return createPortal(
     <div
       role="dialog"
       aria-modal="true"
       aria-labelledby="case-modal-title"
-      onClick={onClose}
+      onClick={closeModal}
       className="fixed inset-0 z-100 flex items-center justify-center bg-background/80 p-6 backdrop-blur-xs"
     >
       <div
+        ref={modalRef}
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[85vh] w-full max-w-2xl overflow-y-auto border border-border bg-background p-8 sm:p-10"
+        className="max-h-[85vh] w-full max-w-3xl overflow-y-auto border border-border bg-background p-8 sm:p-10"
       >
         <div className="flex items-start justify-between gap-6">
           <div>
@@ -65,7 +89,7 @@ export function CaseModal({
           <button
             ref={closeButtonRef}
             type="button"
-            onClick={onClose}
+            onClick={closeModal}
             aria-label="Close"
             className="flex h-9 w-9 shrink-0 items-center justify-center border border-border text-foreground/70 outline-hidden transition-colors hover:border-accent hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
@@ -84,6 +108,26 @@ export function CaseModal({
           ))}
         </ul>
 
+        {project.hasImage && (
+          <button
+            type="button"
+            onClick={() => setZoomOpen(true)}
+            aria-label={`Zoom in on ${project.imageAlt}`}
+            className="group relative mt-6 aspect-video w-full cursor-zoom-in overflow-hidden border border-border bg-surface outline-hidden focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          >
+            <Image
+              src={`/projects/${project.image}`}
+              alt={project.imageAlt}
+              fill
+              sizes="(min-width: 768px) 768px, 100vw"
+              className="object-contain"
+            />
+            <span className="absolute right-3 bottom-3 flex h-8 w-8 items-center justify-center border border-border bg-background/80 text-foreground/70 opacity-0 backdrop-blur-xs transition-opacity duration-200 group-hover:opacity-100">
+              <LuZoomIn size={15} aria-hidden="true" />
+            </span>
+          </button>
+        )}
+
         <div className="mt-8 space-y-6">
           {sections.map((section) => (
             <div key={section.key}>
@@ -97,6 +141,38 @@ export function CaseModal({
           ))}
         </div>
       </div>
+
+      {zoomOpen && project.hasImage && (
+        <div
+          ref={zoomRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label={project.imageAlt}
+          onClick={(e) => {
+            e.stopPropagation();
+            setZoomOpen(false);
+          }}
+          className="fixed inset-0 z-110 flex items-center justify-center bg-background/95 p-6 backdrop-blur-xs"
+        >
+          <button
+            type="button"
+            onClick={() => setZoomOpen(false)}
+            aria-label="Close zoomed image"
+            className="absolute top-6 right-6 flex h-9 w-9 items-center justify-center border border-border text-foreground/70 outline-hidden transition-colors hover:border-accent hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          >
+            <LuX size={16} aria-hidden="true" />
+          </button>
+          <div className="relative h-full max-h-[90vh] w-full max-w-6xl">
+            <Image
+              src={`/projects/${project.image}`}
+              alt={project.imageAlt}
+              fill
+              sizes="100vw"
+              className="object-contain"
+            />
+          </div>
+        </div>
+      )}
     </div>,
     document.body
   );

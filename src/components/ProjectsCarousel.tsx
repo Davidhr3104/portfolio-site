@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { PointerEvent as ReactPointerEvent } from "react";
+import type { KeyboardEvent as ReactKeyboardEvent, PointerEvent as ReactPointerEvent } from "react";
 import Image from "next/image";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import type { Project } from "@/data/projects";
 import { CaseModal } from "@/components/CaseModal";
 
-type Item = Project & { hasImage: boolean };
+export type Item = Project & { hasImage: boolean };
 
 function prefersReducedMotion() {
   return (
@@ -25,23 +25,54 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
   const [active, setActive] = useState(0);
   const [caseOpen, setCaseOpen] = useState(false);
   const dragState = useRef({ startX: 0, startScroll: 0, dragging: false, moved: false });
+  const isProgrammaticScroll = useRef(false);
+  const programmaticScrollTimeout = useRef<number | undefined>(undefined);
 
+  // Track which card is active by finding the one closest to the track's
+  // horizontal center -- but only in response to free-form scrolling (drag,
+  // wheel). Explicit navigation (arrows, clicking a card) sets `active`
+  // directly instead of relying on this, because the first/last card can
+  // never be scrolled to true center (the track hits its scroll bounds
+  // first), so a pure "closest to center" reading would never select them.
+  // An earlier IntersectionObserver-based version had the same class of bug:
+  // the active card's own scale-110 transform shifts neighbors' visibility
+  // ratios, so it could latch onto the wrong card, especially on mount.
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            const idx = cardRefs.current.findIndex((el) => el === entry.target);
-            if (idx !== -1) setActive(idx);
-          }
+
+    function updateActiveFromScroll() {
+      if (!track) return;
+      const trackRect = track.getBoundingClientRect();
+      const trackCenter = trackRect.left + trackRect.width / 2;
+      let bestIdx = 0;
+      let bestDist = Infinity;
+      cardRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const cardRect = el.getBoundingClientRect();
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const dist = Math.abs(cardCenter - trackCenter);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestIdx = i;
         }
-      },
-      { root: track, threshold: 0.6 }
-    );
-    cardRefs.current.forEach((el) => el && observer.observe(el));
-    return () => observer.disconnect();
+      });
+      setActive(bestIdx);
+    }
+
+    let raf = 0;
+    function onScroll() {
+      if (isProgrammaticScroll.current) return;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(updateActiveFromScroll);
+    }
+
+    track.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      track.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+      window.clearTimeout(programmaticScrollTimeout.current);
+    };
   }, [projects.length]);
 
   // Native (non-passive) wheel listener so vertical mouse-wheel scroll
@@ -61,6 +92,29 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
 
   function scrollToIndex(i: number) {
     const clamped = Math.max(0, Math.min(projects.length - 1, i));
+    setActive(clamped);
+
+    const track = trackRef.current;
+    isProgrammaticScroll.current = true;
+    window.clearTimeout(programmaticScrollTimeout.current);
+    function clearProgrammaticFlag() {
+      // A short grace period after the scroll actually settles: the browser
+      // recomputes :hover (and can fire mouseenter) on the next frame after
+      // scrollend for whatever card the stationary cursor ends up over, so
+      // clearing the flag exactly on scrollend still lets that late hover
+      // through and overwrite the index we just navigated to.
+      window.setTimeout(() => {
+        isProgrammaticScroll.current = false;
+      }, 150);
+      track?.removeEventListener("scrollend", clearProgrammaticFlag);
+    }
+    // Prefer the native "scrollend" event over a guessed timeout -- a fixed
+    // timeout races the actual (variable-length) smooth-scroll animation: if
+    // the animation runs long, a late scroll event slips through and can
+    // overwrite the just-set active index with a mid-flight reading.
+    track?.addEventListener("scrollend", clearProgrammaticFlag, { once: true });
+    programmaticScrollTimeout.current = window.setTimeout(clearProgrammaticFlag, 1200);
+
     cardRefs.current[clamped]?.scrollIntoView({
       behavior: prefersReducedMotion() ? "auto" : "smooth",
       inline: "center",
@@ -76,20 +130,41 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
       dragging: true,
       moved: false,
     };
-    trackRef.current.setPointerCapture(e.pointerId);
+    // Pointer capture is intentionally NOT acquired here. Capturing on every
+    // press (even a plain click) retargets the resulting `click` event's
+    // compatibility target to this track element instead of the card button
+    // underneath the cursor, so the button's onClick never fires. Capture is
+    // acquired lazily in handlePointerMove, only once real drag movement is
+    // confirmed -- a plain click never crosses that threshold, so it's
+    // never captured and reaches the card's onClick normally.
   }
 
   function handlePointerMove(e: ReactPointerEvent<HTMLDivElement>) {
     if (!dragState.current.dragging || !trackRef.current) return;
     const delta = e.clientX - dragState.current.startX;
-    if (Math.abs(delta) > 5) dragState.current.moved = true;
-    trackRef.current.scrollLeft = dragState.current.startScroll - delta;
+    if (Math.abs(delta) > 5 && !dragState.current.moved) {
+      dragState.current.moved = true;
+      trackRef.current.setPointerCapture(e.pointerId);
+    }
+    if (dragState.current.moved) {
+      trackRef.current.scrollLeft = dragState.current.startScroll - delta;
+    }
   }
 
   function handlePointerUp(e: ReactPointerEvent<HTMLDivElement>) {
     dragState.current.dragging = false;
     if (trackRef.current?.hasPointerCapture(e.pointerId)) {
       trackRef.current.releasePointerCapture(e.pointerId);
+    }
+  }
+
+  function handleTrackKeyDown(e: ReactKeyboardEvent<HTMLDivElement>) {
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      scrollToIndex(active + 1);
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      scrollToIndex(active - 1);
     }
   }
 
@@ -100,7 +175,6 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
       return;
     }
     if (i !== active) {
-      setActive(i);
       scrollToIndex(i);
     } else {
       setCaseOpen(true);
@@ -146,6 +220,7 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerUp}
+        onKeyDown={handleTrackKeyDown}
         className="no-scrollbar mt-10 flex cursor-grab items-center gap-6 overflow-x-auto scroll-smooth px-4 py-6 active:cursor-grabbing"
         style={{ scrollSnapType: "x proximity" }}
       >
@@ -157,13 +232,20 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
               cardRefs.current[i] = el;
             }}
             onClick={() => handleCardClick(i)}
-            onMouseEnter={() => setActive(i)}
+            onMouseEnter={() => {
+              // Ignore hover while a programmatic scroll is animating: the
+              // cursor can stay put on screen while content slides under it,
+              // and the browser fires mouseenter for whatever card ends up
+              // there -- silently overriding the index we just navigated to.
+              if (isProgrammaticScroll.current) return;
+              setActive(i);
+            }}
             style={{ scrollSnapAlign: "center" }}
             aria-label={
               i === active ? `Open case study for ${project.title}` : `View ${project.title}`
             }
             aria-current={i === active}
-            className={`group relative aspect-3/4 w-[220px] shrink-0 origin-center overflow-hidden border outline-hidden transition-all duration-300 ease-out focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:w-[260px] ${
+            className={`group relative aspect-3/4 w-[220px] shrink-0 origin-center overflow-hidden border bg-surface outline-hidden transition-all duration-300 ease-out focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:w-[260px] ${
               i === active
                 ? "z-10 scale-110 border-accent opacity-100"
                 : "scale-[0.85] border-border opacity-45 hover:opacity-70"
@@ -172,10 +254,10 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
             {project.hasImage ? (
               <Image
                 src={`/projects/${project.image}`}
-                alt={`${project.title} — screenshot`}
+                alt={project.imageAlt}
                 fill
                 sizes="260px"
-                className="object-cover"
+                className="object-contain"
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center bg-surface">

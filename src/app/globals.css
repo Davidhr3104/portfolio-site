@@ -86,6 +86,42 @@ body {
   }
 }
 
+@keyframes marquee-scroll-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track-x {
+  animation: marquee-scroll-x 46s linear infinite;
+}
+
+.marquee-mask-x {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 6%,
+    black 94%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 6%,
+    black 94%,
+    transparent
+  );
+}
+
+@media (hover: hover) {
+  .marquee-track-x:hover {
+    animation-play-state: paused;
+  }
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -107,5 +143,79 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  /* Print on a light background -- the dark theme would otherwise print as
+     near-solid ink and tank contrast on paper. Tailwind's `@theme inline`
+     bakes resolved hex values directly into each utility's compiled CSS
+     (e.g. `.text-foreground { color: #eeece6 }`) rather than emitting a
+     live `var(--color-foreground)` reference, so overriding the custom
+     property on :root has no effect on already-generated utilities --
+     confirmed by inspecting computed styles. Forcing `color`/`background`
+     directly is the only thing that actually reaches every utility.
+
+     Reveal-on-scroll elements also sit at opacity-0 until their
+     IntersectionObserver fires; anything never scrolled into view during
+     normal browsing would otherwise print invisible. Animations/transforms
+     are meaningless on paper too, and the active carousel card's scale-110
+     would otherwise crop its neighbors. */
+  * {
+    color: #14171c !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+  }
+
+  /* Darkened enough to hold contrast on white paper while still reading as
+     a distinct accent color instead of collapsing into the same black as
+     everything else. */
+  .text-accent {
+    color: #3d6693 !important;
+  }
+
+  /* Force any collapsed FAQ answer open -- content should be readable on
+     paper regardless of the accordion's on-screen open/closed state. */
+  [style*="grid-template-rows"] {
+    grid-template-rows: 1fr !important;
+  }
+
+  /* Fixed nav and decorative glows/grid don't belong on a printed page. */
+  header,
+  .blur-3xl,
+  .grid-texture {
+    display: none !important;
+  }
+
+  /* The Tools marquee is a nice-to-have on screen; not worth unpicking its
+     duplicated infinite-loop markup for print, so it's simplest to drop. */
+  .marquee-mask-y {
+    display: none !important;
+  }
+
+  /* Reviews are worth keeping in print, but the horizontal marquee both
+     duplicates its content (for a seamless loop) and clips overflow --
+     neither makes sense on paper. Un-clip it, let the real cards wrap
+     naturally across the page width, and hide the aria-hidden duplicate
+     copy so testimonials don't print twice. */
+  .marquee-mask-x {
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+    overflow: visible !important;
+  }
+  .marquee-track-x {
+    flex-wrap: wrap !important;
+    width: auto !important;
+  }
+  .marquee-track-x [aria-hidden="true"] {
+    display: none !important;
   }
 }

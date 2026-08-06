@@ -1,6 +1,7 @@
 import { Reveal } from "@/components/Reveal";
 import { ColorBlob } from "@/components/ColorBlob";
 import { SectionLabel } from "@/components/SectionLabel";
+import { CountUp } from "@/components/CountUp";
 
 const metrics = [
   {
@@ -33,17 +34,25 @@ export function Impact() {
           <Reveal>
             <SectionLabel>Impact</SectionLabel>
           </Reveal>
-          <div className="grid grid-cols-1 gap-10 sm:grid-cols-3 sm:gap-8">
-            {metrics.map((metric, i) => (
-              <Reveal key={metric.label} delay={i * 80}>
-                <p className="font-serif text-5xl text-accent sm:text-6xl">
-                  {metric.value}
-                </p>
-                <p className="mt-3 max-w-[220px] font-sans text-sm leading-relaxed text-muted">
-                  {metric.label}
-                </p>
-              </Reveal>
-            ))}
+          <div>
+            <div className="grid grid-cols-1 gap-10 sm:grid-cols-3 sm:gap-8">
+              {metrics.map((metric, i) => (
+                <Reveal key={metric.label} delay={i * 80}>
+                  <CountUp
+                    value={metric.value}
+                    className="font-serif text-5xl text-accent sm:text-6xl"
+                  />
+                  <p className="mt-3 max-w-[220px] font-sans text-sm leading-relaxed text-muted">
+                    {metric.label}
+                  </p>
+                </Reveal>
+              ))}
+            </div>
+            <Reveal delay={240}>
+              <p className="mt-10 font-sans text-sm text-muted">
+                Real numbers from delivered systems, not projected outcomes.
+              </p>
+            </Reveal>
           </div>
         </div>
       </div>

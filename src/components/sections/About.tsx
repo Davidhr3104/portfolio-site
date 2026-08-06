@@ -64,11 +64,38 @@ export function About() {
                   I can also ship, integrate, and maintain end to end.
                 </p>
               </Reveal>
+              <Reveal delay={220}>
+                <p className="font-sans text-lg leading-relaxed text-foreground/90">
+                  I didn&apos;t start in tech. I spent my early career in
+                  customer support and operations — BPO and call center work
+                  — before moving into freelance work, first as an executive
+                  and virtual assistant, then progressively into AI systems
+                  and automation as I built projects on the side and started
+                  landing client work.
+                </p>
+              </Reveal>
+              <Reveal delay={280}>
+                <p className="font-sans text-lg leading-relaxed text-foreground/90">
+                  Less than two years into AI and automation specifically,
+                  but I&apos;ve moved fast — from self-initiated automations
+                  in n8n, Make, and Zapier to architecting production AI
+                  agents that businesses depend on daily.
+                </p>
+              </Reveal>
+              <Reveal delay={340}>
+                <p className="font-sans text-lg leading-relaxed text-foreground/90">
+                  I care about building AI you can audit not because of one
+                  dramatic failure I witnessed, but because it&apos;s the
+                  engineering standard I hold myself to: if a system can&apos;t
+                  show its work, I don&apos;t trust it enough to ship it —
+                  and neither should you.
+                </p>
+              </Reveal>
             </div>
 
             <div className="mt-12 grid grid-cols-1 gap-8 border-t border-border pt-10 sm:grid-cols-3">
               {pillars.map((pillar, i) => (
-                <Reveal key={pillar.title} delay={240 + i * 60}>
+                <Reveal key={pillar.title} delay={400 + i * 60}>
                   <pillar.icon
                     aria-hidden="true"
                     size={20}

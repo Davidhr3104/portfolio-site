@@ -1,7 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
+import { ScheduleProvider } from "@/components/ScheduleProvider";
+import { StructuredData } from "@/components/StructuredData";
+import { SITE_URL } from "@/lib/site-config";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -21,13 +25,22 @@ const description =
   "I build AI agents you can actually audit — evidence-backed extraction, automated systems, and full-stack products engineered for trust, not demos.";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title,
   description,
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title,
     description,
     type: "website",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#14171c",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -44,9 +57,13 @@ export default function RootLayout({
         suppressHydrationWarning
         className="min-h-full flex flex-col bg-background text-foreground font-sans"
       >
-        <Nav />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <StructuredData />
+        <ScheduleProvider>
+          <Nav />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </ScheduleProvider>
+        <Analytics />
       </body>
     </html>
   );

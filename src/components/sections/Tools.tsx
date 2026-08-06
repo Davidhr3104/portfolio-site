@@ -1,11 +1,17 @@
 import { stackItemsWithIcon } from "@/data/stack";
 import { Reveal } from "@/components/Reveal";
+import { ColorBlob } from "@/components/ColorBlob";
 import { SectionLabel } from "@/components/SectionLabel";
 
 export function Tools() {
   return (
-    <section id="tools" className="border-t border-border">
-      <div className="mx-auto max-w-5xl px-6 py-32 sm:py-40 lg:py-48">
+    <section id="tools" className="relative overflow-hidden border-t border-border">
+      <ColorBlob
+        className="right-0 bottom-0 translate-x-[10%] translate-y-1/5"
+        size={460}
+        opacity={0.22}
+      />
+      <div className="relative mx-auto max-w-5xl px-6 py-24 sm:py-32 lg:py-36">
         <div className="grid grid-cols-1 items-center gap-16 md:grid-cols-2">
           <Reveal>
             <div className="marquee-mask-y relative h-[420px] overflow-hidden">

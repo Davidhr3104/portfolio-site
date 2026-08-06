@@ -4,6 +4,7 @@ export type Project = {
   title: string;
   description: string;
   image: string;
+  imageAlt: string;
   tags: string[];
   caseStudy: {
     problem: string;
@@ -20,6 +21,8 @@ export const projects: Project[] = [
     description:
       "Teams pulling data from documents by hand had no way to know what was actually safe to trust. This extracts structured fields from invoices, contracts, and resumes — scoring each value's confidence and citing the exact source it came from.",
     image: "confidence-extraction.png",
+    imageAlt:
+      "Confidence Extraction Demo interface showing structured invoice fields with per-field confidence scores and cited source text",
     tags: ["Claude API", "TypeScript", "Next.js"],
     caseStudy: {
       problem:
@@ -37,6 +40,8 @@ export const projects: Project[] = [
     description:
       "A sales team was losing hours a week manually reviewing every inbound lead against criteria that lived in a spreadsheet. This scores and filters leads in real time against the firm's own rules, attaching the reasoning behind each call — cutting qualification time by 90%.",
     image: "lead-scoring.png",
+    imageAlt:
+      "AI Lead Qualifier automation workflow showing lead scoring, a Google Sheets logging step, and a conditional branch into AI-drafted follow-up emails",
     tags: ["Claude API", "Supabase", "Next.js"],
     caseStudy: {
       problem:
@@ -54,6 +59,8 @@ export const projects: Project[] = [
     description:
       "Answers to internal questions lived scattered across documents nobody had time to search through. This retrieval-augmented assistant answers only from that documentation, citing the exact source and passage — and says so when nothing relevant is found.",
     image: "rag-assistant.png",
+    imageAlt:
+      "Internal Knowledge Assistant chat interface showing a sourced answer with cited SOP passages and retrieval-match percentages",
     tags: ["Claude API", "Embeddings", "Supabase"],
     caseStudy: {
       problem:
@@ -71,6 +78,8 @@ export const projects: Project[] = [
     description:
       "A business running multiple systems had no way to catch when records drifted out of sync. This reconciles CRM, billing, and operations data, surfacing drift field by field and tracking what's been reviewed versus resolved.",
     image: "sync-dashboard.png",
+    imageAlt:
+      "Sync and Drift Dashboard showing CRM, Billing, and Ops Tracker discrepancies alongside a sync health chart over time",
     tags: ["Next.js", "Supabase", "TypeScript"],
     caseStudy: {
       problem:
@@ -88,6 +97,8 @@ export const projects: Project[] = [
     description:
       "An executive was spending hours a week just sorting through email before getting to anything that mattered. This classifies and prioritizes messages automatically, drafting responses for the routine ones and surfacing the rest — recovering roughly $800/month in previously missed follow-ups.",
     image: "ceo-inbox.png",
+    imageAlt:
+      "CEO inbox automation workflow showing a new email triggering AI analysis and branching into urgent, spam, client, and internal paths",
     tags: ["Claude API", "n8n", "Node.js"],
     caseStudy: {
       problem:

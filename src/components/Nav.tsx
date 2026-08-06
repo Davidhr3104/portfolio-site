@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useSchedule } from "@/components/ScheduleProvider";
 
 const links = [
   { href: "/#about", label: "About" },
   { href: "/#projects", label: "Projects" },
   { href: "/#impact", label: "Impact" },
-  { href: "/notes", label: "Notes" },
   { href: "/#contact", label: "Contact" },
 ];
 
@@ -16,6 +16,7 @@ const linkClass =
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const openSchedule = useSchedule();
 
   return (
     <header className="fixed top-0 inset-x-0 z-50 border-b border-border bg-background/85 backdrop-blur-sm">
@@ -38,6 +39,14 @@ export function Nav() {
               </li>
             ))}
           </ul>
+
+          <button
+            type="button"
+            onClick={openSchedule}
+            className="border border-accent px-4 py-1.5 font-sans text-xs uppercase tracking-[0.12em] text-accent outline-hidden transition-colors duration-300 hover:bg-accent hover:text-background focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+          >
+            Schedule
+          </button>
 
           <button
             type="button"
