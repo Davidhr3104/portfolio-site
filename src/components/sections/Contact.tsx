@@ -79,21 +79,21 @@ export function Contact() {
                   View my Upwork profile
                   <span aria-hidden="true">→</span>
                 </a>
-              </div>
-              <div className="mt-5 flex items-center gap-2">
-                <span className="font-sans text-sm text-muted">{EMAIL}</span>
-                <button
-                  type="button"
-                  onClick={copyEmail}
-                  aria-label={copied ? "Email copied" : "Copy email address"}
-                  className="flex h-7 w-7 items-center justify-center text-muted outline-hidden transition-colors hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-                >
-                  {copied ? (
-                    <LuCheck size={14} aria-hidden="true" className="text-accent" />
-                  ) : (
-                    <LuCopy size={14} aria-hidden="true" />
-                  )}
-                </button>
+                <div className="flex items-center gap-2">
+                  <span className="font-sans text-sm text-muted">{EMAIL}</span>
+                  <button
+                    type="button"
+                    onClick={copyEmail}
+                    aria-label={copied ? "Email copied" : "Copy email address"}
+                    className="flex h-7 w-7 items-center justify-center text-muted outline-hidden transition-colors hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  >
+                    {copied ? (
+                      <LuCheck size={14} aria-hidden="true" className="text-accent" />
+                    ) : (
+                      <LuCopy size={14} aria-hidden="true" />
+                    )}
+                  </button>
+                </div>
               </div>
             </Reveal>
           </div>
