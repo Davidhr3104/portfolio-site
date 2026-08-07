@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Reveal } from "@/components/Reveal";
-import { ColorBlob } from "@/components/ColorBlob";
+import { GlossySphereCorner } from "@/components/GlossySphere";
 import { SectionLabel } from "@/components/SectionLabel";
 
 const faqs = [
@@ -50,10 +50,11 @@ export function Faq() {
 
   return (
     <section id="faq" className="relative overflow-hidden border-t border-border">
-      <ColorBlob
-        className="top-0 right-0 translate-x-[10%] -translate-y-1/5"
-        size={460}
-        opacity={0.22}
+      <GlossySphereCorner
+        corner="top-right"
+        primaryColor="var(--color-accent)"
+        secondaryColor="var(--color-foreground)"
+        secondaryOpacity={0.55}
       />
       <div className="relative mx-auto max-w-5xl px-6 py-24 sm:py-32 lg:py-36">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-[200px_1fr] md:gap-16">

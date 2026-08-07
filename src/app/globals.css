@@ -4,14 +4,49 @@
   --font-sans: var(--font-inter);
   --font-serif: var(--font-fraunces);
 
-  --color-background: #14171c;
-  --color-foreground: #eeece6;
-  --color-accent: #7fa8d6;
-  --color-gold: #cda866;
-  --color-muted: #8b95a0;
-  --color-border: #262b32;
-  --color-surface: #1b1f25;
-  --color-wash: #171b21;
+  --color-background: var(--theme-background);
+  --color-foreground: var(--theme-foreground);
+  --color-accent: var(--theme-accent);
+  --color-gold: var(--theme-gold);
+  --color-muted: var(--theme-muted);
+  --color-border: var(--theme-border);
+  --color-surface: var(--theme-surface);
+  --color-wash: var(--theme-wash);
+}
+
+:root,
+:root[data-theme="dark"] {
+  --theme-background: #14171c;
+  --theme-foreground: #eeece6;
+  --theme-accent: #7fa8d6;
+  --theme-gold: #cda866;
+  --theme-muted: #8b95a0;
+  --theme-border: #262b32;
+  --theme-surface: #1b1f25;
+  --theme-wash: #171b21;
+
+  --blob-rgb: 100, 140, 190;
+  --grid-rgb: 170, 195, 220;
+}
+
+/* Light mode is the same editorial palette inverted -- warm paper
+   background instead of near-black, deep ink instead of cream, and the
+   accent/gold hues darkened enough to hold contrast on a light surface
+   (the accent value matches what print styles already use for the same
+   reason). Dark is the default on every load; this only applies once
+   the theme toggle sets data-theme="light" client-side. */
+:root[data-theme="light"] {
+  --theme-background: #f6f3ec;
+  --theme-foreground: #1c1f24;
+  --theme-accent: #3d6693;
+  --theme-gold: #96703a;
+  --theme-muted: #6b7280;
+  --theme-border: #e2ddd0;
+  --theme-surface: #efe9dd;
+  --theme-wash: #f1ece0;
+
+  --blob-rgb: 61, 102, 147;
+  --grid-rgb: 61, 102, 147;
 }
 
 :root {
@@ -122,6 +157,29 @@ body {
   }
 }
 
+/* Slow ambient drift for the glossy corner spheres -- translate distance and
+   scale come from per-instance custom properties so several spheres can
+   share one keyframe definition while still drifting independently.
+   Duration/delay are also set per-instance via inline style. Disabling for
+   prefers-reduced-motion is handled by the blanket `*` override below,
+   not repeated here. */
+@keyframes sphere-float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(var(--float-x, -14px), var(--float-y, 18px))
+      scale(var(--float-scale, 1.04));
+  }
+}
+
+.glossy-sphere {
+  animation-name: sphere-float;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -147,14 +205,10 @@ body {
 }
 
 @media print {
-  /* Print on a light background -- the dark theme would otherwise print as
-     near-solid ink and tank contrast on paper. Tailwind's `@theme inline`
-     bakes resolved hex values directly into each utility's compiled CSS
-     (e.g. `.text-foreground { color: #eeece6 }`) rather than emitting a
-     live `var(--color-foreground)` reference, so overriding the custom
-     property on :root has no effect on already-generated utilities --
-     confirmed by inspecting computed styles. Forcing `color`/`background`
-     directly is the only thing that actually reaches every utility.
+  /* Print on a light background regardless of the active on-screen theme --
+     forcing `color`/`background` directly (rather than swapping the
+     --theme-* custom properties) guarantees consistent output whether the
+     page was in dark or light mode when printed.
 
      Reveal-on-scroll elements also sit at opacity-0 until their
      IntersectionObserver fires; anything never scrolled into view during

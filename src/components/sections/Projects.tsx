@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { projects } from "@/data/projects";
 import { Reveal } from "@/components/Reveal";
-import { ColorBlob } from "@/components/ColorBlob";
+import { GlossySphereCorner } from "@/components/GlossySphere";
 import { SectionLabel } from "@/components/SectionLabel";
 import { ProjectsCarousel } from "@/components/ProjectsCarousel";
 
@@ -23,10 +23,11 @@ export function Projects() {
       id="projects"
       className="relative overflow-hidden border-t border-border"
     >
-      <ColorBlob
-        className="top-0 right-0 -translate-y-1/5 translate-x-[10%]"
-        size={480}
-        opacity={0.2}
+      <GlossySphereCorner
+        corner="top-right"
+        primaryColor="var(--color-accent)"
+        secondaryColor="var(--color-foreground)"
+        secondaryOpacity={0.55}
       />
       <div className="relative mx-auto max-w-5xl px-6 py-32 sm:py-40 lg:py-48">
         <Reveal>

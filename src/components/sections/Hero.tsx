@@ -1,17 +1,51 @@
+"use client";
+
+import { useState } from "react";
 import { Reveal } from "@/components/Reveal";
-import { ColorBlob } from "@/components/ColorBlob";
+import { GlossySphereCorner } from "@/components/GlossySphere";
+
+type Intent = "hiring" | "partnership" | null;
+
+const pillClass = (active: boolean) =>
+  `border px-4 py-2 font-sans text-sm outline-hidden transition-colors duration-300 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent ${
+    active
+      ? "border-accent bg-accent text-background"
+      : "border-border text-foreground/70 hover:border-accent hover:text-accent"
+  }`;
 
 export function Hero() {
+  const [intent, setIntent] = useState<Intent>(null);
+
+  function toggle(next: Exclude<Intent, null>) {
+    setIntent((current) => (current === next ? null : next));
+  }
+
+  const ctaHref = intent === "partnership" ? "#process" : "#projects";
+  const ctaLabel = intent === "partnership" ? "See how I work" : "See the work";
+  const subtext =
+    intent === "hiring"
+      ? "Good place to start — here's what I've shipped."
+      : intent === "partnership"
+        ? "Good place to start — here's how I approach the work."
+        : null;
+
   return (
     <section id="top" className="relative overflow-hidden">
       <div
         aria-hidden="true"
         className="grid-texture pointer-events-none absolute inset-0 -z-20"
       />
-      <ColorBlob
-        className="top-0 right-0 -translate-y-1/5 translate-x-[10%]"
-        size={560}
-        opacity={0.26}
+      <GlossySphereCorner
+        corner="top-left"
+        primaryColor="var(--color-foreground)"
+        primaryOpacity={0.85}
+        secondaryColor="var(--color-accent)"
+      />
+      <GlossySphereCorner
+        corner="top-right"
+        primaryColor="var(--color-accent)"
+        secondaryColor="var(--color-foreground)"
+        secondaryOpacity={0.55}
       />
       <div className="relative mx-auto max-w-5xl px-6 pt-44 pb-32 sm:pt-56 sm:pb-40 lg:pb-48">
         <Reveal>
@@ -44,6 +78,27 @@ export function Hero() {
             For founders and teams who need AI they can actually rely on,
             not just impress with.
           </p>
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={() => toggle("hiring")}
+              aria-pressed={intent === "hiring"}
+              className={pillClass(intent === "hiring")}
+            >
+              I&apos;m hiring for a project
+            </button>
+            <button
+              type="button"
+              onClick={() => toggle("partnership")}
+              aria-pressed={intent === "partnership"}
+              className={pillClass(intent === "partnership")}
+            >
+              I&apos;m exploring a partnership
+            </button>
+          </div>
+          {subtext && (
+            <p className="mt-3 font-sans text-sm text-muted">{subtext}</p>
+          )}
         </Reveal>
         <Reveal delay={320}>
           <div className="mt-8 inline-flex items-center gap-2.5">
@@ -58,10 +113,14 @@ export function Hero() {
         </Reveal>
         <Reveal delay={400}>
           <a
-            href="#projects"
-            className="mt-10 inline-flex items-center gap-2 font-sans text-sm text-accent outline-hidden transition-colors hover:text-gold focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+            href={ctaHref}
+            className={`mt-10 inline-flex items-center gap-2 font-sans outline-hidden transition-colors hover:text-gold focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent ${
+              intent === "hiring"
+                ? "text-base font-medium text-accent sm:text-lg"
+                : "text-sm text-accent"
+            }`}
           >
-            See the work
+            {ctaLabel}
             <span aria-hidden="true">↓</span>
           </a>
         </Reveal>

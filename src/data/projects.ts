@@ -1,3 +1,12 @@
+export const PROBLEM_TYPES = [
+  "Data Extraction",
+  "Lead & Sales",
+  "Knowledge & Search",
+  "Ops & Sync",
+] as const;
+
+export type ProblemType = (typeof PROBLEM_TYPES)[number];
+
 export type Project = {
   slug: string;
   index: string;
@@ -6,6 +15,7 @@ export type Project = {
   image: string;
   imageAlt: string;
   tags: string[];
+  problemTypes: ProblemType[];
   caseStudy: {
     problem: string;
     approach: string;
@@ -24,6 +34,7 @@ export const projects: Project[] = [
     imageAlt:
       "Confidence Extraction Demo interface showing structured invoice fields with per-field confidence scores and cited source text",
     tags: ["Claude API", "TypeScript", "Next.js"],
+    problemTypes: ["Data Extraction"],
     caseStudy: {
       problem:
         "Manual document review doesn't scale — reviewers were re-checking every extracted field by hand because there was no way to tell which values were safe to trust and which needed a second look.",
@@ -43,6 +54,7 @@ export const projects: Project[] = [
     imageAlt:
       "AI Lead Qualifier automation workflow showing lead scoring, a Google Sheets logging step, and a conditional branch into AI-drafted follow-up emails",
     tags: ["Claude API", "Supabase", "Next.js"],
+    problemTypes: ["Lead & Sales"],
     caseStudy: {
       problem:
         "Sales reps were spending hours a week manually triaging inbound leads against qualification criteria that lived in a spreadsheet, with no consistency between reps.",
@@ -62,6 +74,7 @@ export const projects: Project[] = [
     imageAlt:
       "Internal Knowledge Assistant chat interface showing a sourced answer with cited SOP passages and retrieval-match percentages",
     tags: ["Claude API", "Embeddings", "Supabase"],
+    problemTypes: ["Knowledge & Search"],
     caseStudy: {
       problem:
         "Internal documentation existed but nobody trusted it enough to rely on — search either returned nothing or too much, with no way to know if an answer was actually grounded in the source.",
@@ -81,6 +94,7 @@ export const projects: Project[] = [
     imageAlt:
       "Sync and Drift Dashboard showing CRM, Billing, and Ops Tracker discrepancies alongside a sync health chart over time",
     tags: ["Next.js", "Supabase", "TypeScript"],
+    problemTypes: ["Ops & Sync"],
     caseStudy: {
       problem:
         "CRM, billing, and an operations spreadsheet drifted out of sync silently — nobody noticed a mismatch until it caused a real problem downstream.",
@@ -100,6 +114,7 @@ export const projects: Project[] = [
     imageAlt:
       "CEO inbox automation workflow showing a new email triggering AI analysis and branching into urgent, spam, client, and internal paths",
     tags: ["Claude API", "n8n", "Node.js"],
+    problemTypes: ["Ops & Sync", "Lead & Sales"],
     caseStudy: {
       problem:
         "A high-volume inbox meant real opportunities were getting buried under routine messages, and manually triaging every email cost more time than it saved.",

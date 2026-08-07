@@ -1,15 +1,16 @@
 import { stackItemsWithIcon } from "@/data/stack";
 import { Reveal } from "@/components/Reveal";
-import { ColorBlob } from "@/components/ColorBlob";
+import { GlossySphereCorner } from "@/components/GlossySphere";
 import { SectionLabel } from "@/components/SectionLabel";
 
 export function Tools() {
   return (
     <section id="tools" className="relative overflow-hidden border-t border-border">
-      <ColorBlob
-        className="right-0 bottom-0 translate-x-[10%] translate-y-1/5"
-        size={460}
-        opacity={0.22}
+      <GlossySphereCorner
+        corner="bottom-right"
+        primaryColor="var(--color-foreground)"
+        primaryOpacity={0.85}
+        secondaryColor="var(--color-accent)"
       />
       <div className="relative mx-auto max-w-5xl px-6 py-24 sm:py-32 lg:py-36">
         <div className="grid grid-cols-1 items-center gap-16 md:grid-cols-2">

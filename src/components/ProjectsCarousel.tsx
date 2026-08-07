@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { KeyboardEvent as ReactKeyboardEvent, PointerEvent as ReactPointerEvent } from "react";
 import Image from "next/image";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
-import type { Project } from "@/data/projects";
+import { PROBLEM_TYPES, type Project, type ProblemType } from "@/data/projects";
 import { CaseModal } from "@/components/CaseModal";
 
 export type Item = Project & { hasImage: boolean };
@@ -19,11 +19,19 @@ function prefersReducedMotion() {
 const arrowClass =
   "flex h-9 w-9 items-center justify-center border border-border text-foreground/70 outline-hidden transition-colors hover:border-accent hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-30 disabled:hover:border-border disabled:hover:text-foreground/70";
 
+const filterPillClass = (active: boolean) =>
+  `border px-3.5 py-1.5 font-sans text-xs uppercase tracking-[0.1em] outline-hidden transition-colors duration-300 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+    active
+      ? "border-accent bg-accent text-background"
+      : "border-border text-foreground/70 hover:border-accent hover:text-accent"
+  }`;
+
 export function ProjectsCarousel({ projects }: { projects: Item[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [active, setActive] = useState(0);
   const [caseOpen, setCaseOpen] = useState(false);
+  const [activeFilter, setActiveFilter] = useState<ProblemType | null>(null);
   const dragState = useRef({ startX: 0, startScroll: 0, dragging: false, moved: false });
   const isProgrammaticScroll = useRef(false);
   const programmaticScrollTimeout = useRef<number | undefined>(undefined);
@@ -122,6 +130,15 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
     });
   }
 
+  function selectFilter(filter: ProblemType | null) {
+    setActiveFilter(filter);
+    if (!filter) return;
+    const firstMatch = projects.findIndex((p) =>
+      p.problemTypes.includes(filter)
+    );
+    if (firstMatch !== -1) scrollToIndex(firstMatch);
+  }
+
   function handlePointerDown(e: ReactPointerEvent<HTMLDivElement>) {
     if (e.pointerType !== "mouse" || !trackRef.current) return;
     dragState.current = {
@@ -185,7 +202,29 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
 
   return (
     <div className="mt-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          onClick={() => selectFilter(null)}
+          aria-pressed={activeFilter === null}
+          className={filterPillClass(activeFilter === null)}
+        >
+          All
+        </button>
+        {PROBLEM_TYPES.map((type) => (
+          <button
+            key={type}
+            type="button"
+            onClick={() => selectFilter(type)}
+            aria-pressed={activeFilter === type}
+            className={filterPillClass(activeFilter === type)}
+          >
+            {type}
+          </button>
+        ))}
+      </div>
+
+      <div className="mt-6 flex items-center justify-between">
         <span className="font-sans text-sm text-muted">
           <span className="text-foreground">
             {String(active + 1).padStart(2, "0")}

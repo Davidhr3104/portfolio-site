@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { ScheduleProvider } from "@/components/ScheduleProvider";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { StructuredData } from "@/components/StructuredData";
 import { SITE_URL } from "@/lib/site-config";
 import "./globals.css";
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#14171c",
-  colorScheme: "dark",
+  colorScheme: "dark light",
 };
 
 export default function RootLayout({
@@ -58,11 +59,13 @@ export default function RootLayout({
         className="min-h-full flex flex-col bg-background text-foreground font-sans"
       >
         <StructuredData />
-        <ScheduleProvider>
-          <Nav />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </ScheduleProvider>
+        <ThemeProvider>
+          <ScheduleProvider>
+            <Nav />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </ScheduleProvider>
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>

@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { LuSun, LuMoon } from "react-icons/lu";
 import { useSchedule } from "@/components/ScheduleProvider";
+import { useTheme } from "@/components/ThemeProvider";
 
 const links = [
   { href: "/#about", label: "About" },
@@ -17,6 +19,7 @@ const linkClass =
 export function Nav() {
   const [open, setOpen] = useState(false);
   const openSchedule = useSchedule();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <header className="fixed top-0 inset-x-0 z-50 border-b border-border bg-background/85 backdrop-blur-sm">
@@ -46,6 +49,21 @@ export function Nav() {
             className="border border-accent px-4 py-1.5 font-sans text-xs uppercase tracking-[0.12em] text-accent outline-hidden transition-colors duration-300 hover:bg-accent hover:text-background focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
           >
             Schedule
+          </button>
+
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={
+              theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+            }
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border text-foreground/70 outline-hidden transition-colors duration-200 hover:border-accent hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          >
+            {theme === "dark" ? (
+              <LuSun size={15} aria-hidden="true" />
+            ) : (
+              <LuMoon size={15} aria-hidden="true" />
+            )}
           </button>
 
           <button
