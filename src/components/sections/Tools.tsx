@@ -1,17 +1,15 @@
+"use client";
+
 import { stackItemsWithIcon } from "@/data/stack";
 import { Reveal } from "@/components/Reveal";
-import { GlossySphereCorner } from "@/components/GlossySphere";
 import { SectionLabel } from "@/components/SectionLabel";
+import { useLocale } from "@/components/LocaleProvider";
 
 export function Tools() {
+  const { t } = useLocale();
+
   return (
     <section id="tools" className="relative overflow-hidden border-t border-border">
-      <GlossySphereCorner
-        corner="bottom-right"
-        primaryColor="var(--color-foreground)"
-        primaryOpacity={0.85}
-        secondaryColor="var(--color-accent)"
-      />
       <div className="relative mx-auto max-w-5xl px-6 py-24 sm:py-32 lg:py-36">
         <div className="grid grid-cols-1 items-center gap-16 md:grid-cols-2">
           <Reveal>
@@ -41,11 +39,9 @@ export function Tools() {
           </Reveal>
 
           <Reveal delay={100}>
-            <SectionLabel>Tools I Use</SectionLabel>
+            <SectionLabel>{t.tools.label}</SectionLabel>
             <p className="mt-6 max-w-sm font-sans text-lg leading-relaxed text-foreground/80">
-              A working set, not a badge wall — AI, automation, and
-              full-stack tools I reach for daily to actually ship what&apos;s
-              on this page.
+              {t.tools.description}
             </p>
           </Reveal>
         </div>

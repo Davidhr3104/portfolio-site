@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "David Herrera — AI Systems Architect";
+export const alt = "David Herrera · AI Systems Architect";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -52,7 +52,7 @@ export default function OpengraphImage() {
             lineHeight: 1.4,
           }}
         >
-          I build AI agents you can actually audit — evidence-backed, engineered for trust, not demos.
+          I build AI agents you can actually audit: evidence-backed, engineered for trust, not demos.
         </div>
       </div>
     ),

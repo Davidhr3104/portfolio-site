@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Reveal } from "@/components/Reveal";
-import { GlossySphereCorner } from "@/components/GlossySphere";
+import { useLocale } from "@/components/LocaleProvider";
 
 type Intent = "hiring" | "partnership" | null;
 
@@ -14,6 +14,7 @@ const pillClass = (active: boolean) =>
   }`;
 
 export function Hero() {
+  const { t } = useLocale();
   const [intent, setIntent] = useState<Intent>(null);
 
   function toggle(next: Exclude<Intent, null>) {
@@ -21,32 +22,16 @@ export function Hero() {
   }
 
   const ctaHref = intent === "partnership" ? "#process" : "#projects";
-  const ctaLabel = intent === "partnership" ? "See how I work" : "See the work";
+  const ctaLabel = intent === "partnership" ? t.hero.ctaProcess : t.hero.ctaWork;
   const subtext =
     intent === "hiring"
-      ? "Good place to start — here's what I've shipped."
+      ? t.hero.subtextHiring
       : intent === "partnership"
-        ? "Good place to start — here's how I approach the work."
+        ? t.hero.subtextPartnership
         : null;
 
   return (
     <section id="top" className="relative overflow-hidden">
-      <div
-        aria-hidden="true"
-        className="grid-texture pointer-events-none absolute inset-0 -z-20"
-      />
-      <GlossySphereCorner
-        corner="top-left"
-        primaryColor="var(--color-foreground)"
-        primaryOpacity={0.85}
-        secondaryColor="var(--color-accent)"
-      />
-      <GlossySphereCorner
-        corner="top-right"
-        primaryColor="var(--color-accent)"
-        secondaryColor="var(--color-foreground)"
-        secondaryOpacity={0.55}
-      />
       <div className="relative mx-auto max-w-5xl px-6 pt-44 pb-32 sm:pt-56 sm:pb-40 lg:pb-48">
         <Reveal>
           <div className="relative">
@@ -65,19 +50,14 @@ export function Hero() {
         </Reveal>
         <Reveal delay={120}>
           <p className="mt-5 font-serif italic text-2xl sm:text-3xl text-accent">
-            AI Systems Architect
+            {t.hero.role}
           </p>
         </Reveal>
         <Reveal delay={240}>
           <p className="mt-10 max-w-xl font-sans text-lg sm:text-xl leading-relaxed text-foreground/80">
-            I build AI agents you can actually audit — evidence-backed
-            extraction, automated systems, and full-stack products
-            engineered for trust, not demos.
+            {t.hero.pitch}
           </p>
-          <p className="mt-4 max-w-xl font-sans text-base text-muted">
-            For founders and teams who need AI they can actually rely on,
-            not just impress with.
-          </p>
+          <p className="mt-4 max-w-xl font-sans text-base text-muted">{t.hero.audience}</p>
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <button
               type="button"
@@ -85,7 +65,7 @@ export function Hero() {
               aria-pressed={intent === "hiring"}
               className={pillClass(intent === "hiring")}
             >
-              I&apos;m hiring for a project
+              {t.hero.pillHiring}
             </button>
             <button
               type="button"
@@ -93,7 +73,7 @@ export function Hero() {
               aria-pressed={intent === "partnership"}
               className={pillClass(intent === "partnership")}
             >
-              I&apos;m exploring a partnership
+              {t.hero.pillPartnership}
             </button>
           </div>
           {subtext && (
@@ -106,9 +86,7 @@ export function Hero() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#5f9c76] opacity-60" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-[#5f9c76]" />
             </span>
-            <span className="font-sans text-sm text-muted">
-              Currently available — limited capacity
-            </span>
+            <span className="font-sans text-sm text-muted">{t.hero.availability}</span>
           </div>
         </Reveal>
         <Reveal delay={400}>

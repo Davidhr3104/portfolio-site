@@ -8,6 +8,7 @@ import {
   SiZapier,
   SiNextdotjs,
   SiTypescript,
+  SiPython,
   SiJavascript,
   SiHtml5,
   SiCss,
@@ -66,6 +67,7 @@ export const stackCategories: { label: string; items: StackItem[] }[] = [
     items: [
       { label: "Next.js / React", icon: SiNextdotjs },
       { label: "TypeScript", icon: SiTypescript },
+      { label: "Python", icon: SiPython },
       { label: "JavaScript", icon: SiJavascript },
       { label: "HTML", icon: SiHtml5 },
       { label: "CSS", icon: SiCss },

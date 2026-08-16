@@ -3,15 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
-import { LuX, LuZoomIn } from "react-icons/lu";
+import { LuArrowUpRight, LuX, LuZoomIn } from "react-icons/lu";
 import type { Item } from "@/components/ProjectsCarousel";
 import { useFocusTrap } from "@/lib/useFocusTrap";
-
-const sections = [
-  { key: "problem", label: "Problem" },
-  { key: "approach", label: "Approach" },
-  { key: "result", label: "Result" },
-] as const;
+import { useLocale } from "@/components/LocaleProvider";
 
 export function CaseModal({
   project,
@@ -20,6 +15,7 @@ export function CaseModal({
   project: Item | null;
   onClose: () => void;
 }) {
+  const { locale, t } = useLocale();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const zoomRef = useRef<HTMLDivElement>(null);
@@ -58,6 +54,14 @@ export function CaseModal({
 
   if (!project || typeof document === "undefined") return null;
 
+  const sections = [
+    { key: "problem", label: t.projects.sections.problem },
+    { key: "approach", label: t.projects.sections.approach },
+    { key: "result", label: t.projects.sections.result },
+  ] as const;
+
+  const imageAlt = project.imageAlt[locale];
+
   function closeModal() {
     setZoomOpen(false);
     onClose();
@@ -83,14 +87,14 @@ export function CaseModal({
               id="case-modal-title"
               className="mt-1 font-serif text-2xl leading-tight text-foreground sm:text-3xl"
             >
-              {project.title}
+              {project.title[locale]}
             </h2>
           </div>
           <button
             ref={closeButtonRef}
             type="button"
             onClick={closeModal}
-            aria-label="Close"
+            aria-label={t.projects.closeAria}
             className="flex h-9 w-9 shrink-0 items-center justify-center border border-border text-foreground/70 outline-hidden transition-colors hover:border-accent hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             <LuX size={16} aria-hidden="true" />
@@ -112,12 +116,12 @@ export function CaseModal({
           <button
             type="button"
             onClick={() => setZoomOpen(true)}
-            aria-label={`Zoom in on ${project.imageAlt}`}
+            aria-label={t.projects.zoomAria(imageAlt)}
             className="group relative mt-6 aspect-video w-full cursor-zoom-in overflow-hidden border border-border bg-surface outline-hidden focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             <Image
               src={`/projects/${project.image}`}
-              alt={project.imageAlt}
+              alt={imageAlt}
               fill
               sizes="(min-width: 768px) 768px, 100vw"
               className="object-contain"
@@ -135,11 +139,23 @@ export function CaseModal({
                 {section.label}
               </p>
               <p className="mt-2 font-sans text-base leading-relaxed text-foreground/80">
-                {project.caseStudy[section.key]}
+                {project.caseStudy[section.key][locale]}
               </p>
             </div>
           ))}
         </div>
+
+        {project.demoHref && (
+          <a
+            href={project.demoHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-8 inline-flex items-center gap-2 border border-accent px-4 py-2 font-sans text-sm uppercase tracking-[0.12em] text-accent outline-hidden transition-colors hover:bg-accent hover:text-background focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+          >
+            {t.projects.tryLiveDemo}
+            <LuArrowUpRight size={15} aria-hidden="true" />
+          </a>
+        )}
       </div>
 
       {zoomOpen && project.hasImage && (
@@ -147,7 +163,7 @@ export function CaseModal({
           ref={zoomRef}
           role="dialog"
           aria-modal="true"
-          aria-label={project.imageAlt}
+          aria-label={imageAlt}
           onClick={(e) => {
             e.stopPropagation();
             setZoomOpen(false);
@@ -157,7 +173,7 @@ export function CaseModal({
           <button
             type="button"
             onClick={() => setZoomOpen(false)}
-            aria-label="Close zoomed image"
+            aria-label={t.projects.closeZoomAria}
             className="absolute top-6 right-6 flex h-9 w-9 items-center justify-center border border-border text-foreground/70 outline-hidden transition-colors hover:border-accent hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             <LuX size={16} aria-hidden="true" />
@@ -165,7 +181,7 @@ export function CaseModal({
           <div className="relative h-full max-h-[90vh] w-full max-w-6xl">
             <Image
               src={`/projects/${project.image}`}
-              alt={project.imageAlt}
+              alt={imageAlt}
               fill
               sizes="100vw"
               className="object-contain"

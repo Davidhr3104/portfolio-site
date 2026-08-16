@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import { useLocale } from "@/components/LocaleProvider";
 
 // Matches the "90%" figure in the Impact metrics above -- keep in sync if
 // that number ever changes.
@@ -8,6 +9,7 @@ const REDUCTION_RATE = 0.9;
 const WEEKS_PER_MONTH = 4.33;
 
 export function TimeSavedEstimator() {
+  const { t } = useLocale();
   const [hours, setHours] = useState(10);
   const id = useId();
 
@@ -20,7 +22,7 @@ export function TimeSavedEstimator() {
         htmlFor={id}
         className="block font-sans text-sm text-foreground/80"
       >
-        Hours per week your team spends on manual review or data entry:{" "}
+        {t.impact.estimator.sliderLabelPrefix}{" "}
         <span className="font-medium text-foreground">{hours}</span>
       </label>
       <input
@@ -34,18 +36,18 @@ export function TimeSavedEstimator() {
         className="mt-4 w-full accent-accent"
       />
       <p className="mt-6 font-sans text-lg leading-relaxed text-foreground/90">
-        At a 90% average reduction, that&apos;s roughly{" "}
+        {t.impact.estimator.sentencePrefix}{" "}
         <span className="font-medium text-accent">
-          {savedPerWeek} hours/week
+          {savedPerWeek} {t.impact.estimator.hoursWeek}
         </span>{" "}
-        back — about{" "}
+        {t.impact.estimator.back}{" "}
         <span className="font-medium text-accent">
-          {savedPerMonth} hours/month
+          {savedPerMonth} {t.impact.estimator.hoursMonth}
         </span>
         .
       </p>
       <p className="mt-3 font-sans text-xs italic text-muted">
-        Illustrative estimate based on average results across past projects.
+        {t.impact.estimator.footnote}
       </p>
     </div>
   );

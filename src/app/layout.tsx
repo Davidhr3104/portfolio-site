@@ -5,6 +5,8 @@ import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { ScheduleProvider } from "@/components/ScheduleProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { LocaleProvider } from "@/components/LocaleProvider";
+import { StarField } from "@/components/StarField";
 import { StructuredData } from "@/components/StructuredData";
 import { SITE_URL } from "@/lib/site-config";
 import "./globals.css";
@@ -21,9 +23,9 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const title = "David Herrera — AI Systems Architect";
+const title = "David Herrera · AI Systems Architect";
 const description =
-  "I build AI agents you can actually audit — evidence-backed extraction, automated systems, and full-stack products engineered for trust, not demos.";
+  "I build AI agents you can actually audit: evidence-backed extraction, automated systems, and full-stack products engineered for trust, not demos.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -58,13 +60,16 @@ export default function RootLayout({
         suppressHydrationWarning
         className="min-h-full flex flex-col bg-background text-foreground font-sans"
       >
+        <StarField />
         <StructuredData />
         <ThemeProvider>
-          <ScheduleProvider>
-            <Nav />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </ScheduleProvider>
+          <LocaleProvider>
+            <ScheduleProvider>
+              <Nav />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </ScheduleProvider>
+          </LocaleProvider>
         </ThemeProvider>
         <Analytics />
       </body>

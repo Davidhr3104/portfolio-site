@@ -6,6 +6,8 @@ import Image from "next/image";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import { PROBLEM_TYPES, type Project, type ProblemType } from "@/data/projects";
 import { CaseModal } from "@/components/CaseModal";
+import { useLocale } from "@/components/LocaleProvider";
+import { SectionLabel } from "@/components/SectionLabel";
 
 export type Item = Project & { hasImage: boolean };
 
@@ -27,6 +29,7 @@ const filterPillClass = (active: boolean) =>
   }`;
 
 export function ProjectsCarousel({ projects }: { projects: Item[] }) {
+  const { locale, t } = useLocale();
   const trackRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [active, setActive] = useState(0);
@@ -202,14 +205,15 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
 
   return (
     <div className="mt-8">
-      <div className="flex flex-wrap items-center gap-2">
+      <SectionLabel>{t.projects.label}</SectionLabel>
+      <div className="mt-6 flex flex-wrap items-center gap-2">
         <button
           type="button"
           onClick={() => selectFilter(null)}
           aria-pressed={activeFilter === null}
           className={filterPillClass(activeFilter === null)}
         >
-          All
+          {t.projects.filterAll}
         </button>
         {PROBLEM_TYPES.map((type) => (
           <button
@@ -219,7 +223,7 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
             aria-pressed={activeFilter === type}
             className={filterPillClass(activeFilter === type)}
           >
-            {type}
+            {t.projects.problemTypeLabels[type]}
           </button>
         ))}
       </div>
@@ -234,7 +238,7 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            aria-label="Previous project"
+            aria-label={t.projects.prevAria}
             disabled={active === 0}
             onClick={() => scrollToIndex(active - 1)}
             className={arrowClass}
@@ -243,7 +247,7 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
           </button>
           <button
             type="button"
-            aria-label="Next project"
+            aria-label={t.projects.nextAria}
             disabled={active === projects.length - 1}
             onClick={() => scrollToIndex(active + 1)}
             className={arrowClass}
@@ -281,7 +285,9 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
             }}
             style={{ scrollSnapAlign: "center" }}
             aria-label={
-              i === active ? `Open case study for ${project.title}` : `View ${project.title}`
+              i === active
+                ? t.projects.openCaseAria(project.title[locale])
+                : t.projects.viewAria(project.title[locale])
             }
             aria-current={i === active}
             className={`group relative aspect-3/4 w-[220px] shrink-0 origin-center overflow-hidden border bg-surface outline-hidden transition-all duration-300 ease-out focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:w-[260px] ${
@@ -293,7 +299,7 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
             {project.hasImage ? (
               <Image
                 src={`/projects/${project.image}`}
-                alt={project.imageAlt}
+                alt={project.imageAlt[locale]}
                 fill
                 sizes="260px"
                 className="object-contain"
@@ -301,7 +307,7 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
             ) : (
               <div className="flex h-full w-full items-center justify-center bg-surface">
                 <span className="font-sans text-xs uppercase tracking-[0.2em] text-muted">
-                  Screenshot
+                  {t.projects.screenshotPlaceholder}
                 </span>
               </div>
             )}
@@ -310,7 +316,7 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
                 {project.index}
               </span>
               <p className="mt-1 line-clamp-2 font-serif text-base leading-snug text-foreground">
-                {project.title}
+                {project.title[locale]}
               </p>
             </div>
           </button>
@@ -329,17 +335,17 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
           ))}
         </ul>
         <h3 className="mt-4 font-serif text-2xl leading-tight text-foreground sm:text-3xl">
-          {activeProject.title}
+          {activeProject.title[locale]}
         </h3>
         <p className="mt-4 font-sans text-base leading-relaxed text-foreground/80">
-          {activeProject.description}
+          {activeProject.description[locale]}
         </p>
         <button
           type="button"
           onClick={() => setCaseOpen(true)}
           className="mt-5 inline-flex items-center gap-2 font-sans text-sm uppercase tracking-[0.12em] text-accent outline-hidden transition-colors hover:text-gold focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
         >
-          View full case
+          {t.projects.viewFullCase}
           <span aria-hidden="true">→</span>
         </button>
       </div>

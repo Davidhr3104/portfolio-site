@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { useLocale } from "@/components/LocaleProvider";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -12,6 +13,7 @@ const labelClass =
   "block font-sans text-xs uppercase tracking-[0.1em] text-muted";
 
 export function ContactForm() {
+  const { t } = useLocale();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -32,7 +34,7 @@ export function ContactForm() {
       });
       const data: { ok?: boolean; error?: string } = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || "Something went wrong.");
+        throw new Error(data.error || t.contactForm.genericError);
       }
       setStatus("success");
       setName("");
@@ -40,17 +42,15 @@ export function ContactForm() {
       setMessage("");
     } catch (err) {
       setStatus("error");
-      setErrorMsg(err instanceof Error ? err.message : "Something went wrong.");
+      setErrorMsg(err instanceof Error ? err.message : t.contactForm.genericError);
     }
   }
 
   if (status === "success") {
     return (
       <div className="border border-border bg-surface p-8">
-        <p className="font-serif text-xl text-foreground">Message sent.</p>
-        <p className="mt-2 font-sans text-sm text-muted">
-          I&apos;ll get back to you within 24 hours.
-        </p>
+        <p className="font-serif text-xl text-foreground">{t.contactForm.successTitle}</p>
+        <p className="mt-2 font-sans text-sm text-muted">{t.contactForm.successBody}</p>
       </div>
     );
   }
@@ -70,7 +70,7 @@ export function ContactForm() {
 
       <div>
         <label htmlFor="contact-name" className={labelClass}>
-          Full name
+          {t.contactForm.fullName}
         </label>
         <input
           id="contact-name"
@@ -78,14 +78,14 @@ export function ContactForm() {
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Your name"
+          placeholder={t.contactForm.namePlaceholder}
           className={`${fieldClass} mt-2`}
         />
       </div>
 
       <div>
         <label htmlFor="contact-email" className={labelClass}>
-          Email address
+          {t.contactForm.emailAddress}
         </label>
         <input
           id="contact-email"
@@ -93,14 +93,14 @@ export function ContactForm() {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@example.com"
+          placeholder={t.contactForm.emailPlaceholder}
           className={`${fieldClass} mt-2`}
         />
       </div>
 
       <div>
         <label htmlFor="contact-message" className={labelClass}>
-          Message
+          {t.contactForm.message}
         </label>
         <textarea
           id="contact-message"
@@ -108,7 +108,7 @@ export function ContactForm() {
           rows={5}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Tell me about your project."
+          placeholder={t.contactForm.messagePlaceholder}
           className={`${fieldClass} mt-2 resize-y`}
         />
       </div>
@@ -124,13 +124,11 @@ export function ContactForm() {
         disabled={status === "submitting"}
         className="inline-flex items-center gap-3 border border-accent px-6 py-3 font-sans text-sm uppercase tracking-[0.15em] text-accent outline-hidden transition-colors duration-300 hover:bg-accent hover:text-background focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent disabled:opacity-50"
       >
-        {status === "submitting" ? "Sending…" : "Send message"}
+        {status === "submitting" ? t.contactForm.sending : t.contactForm.send}
         <span aria-hidden="true">→</span>
       </button>
 
-      <p className="font-sans text-xs italic text-muted">
-        Your info stays between us — no lists, no spam.
-      </p>
+      <p className="font-sans text-xs italic text-muted">{t.contactForm.privacyNote}</p>
     </form>
   );
 }

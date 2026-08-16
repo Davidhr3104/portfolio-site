@@ -1,3 +1,5 @@
+"use client";
+
 import {
   LuGauge,
   LuUserCheck,
@@ -9,81 +11,35 @@ import {
   LuSearchCheck,
 } from "react-icons/lu";
 import { Reveal } from "@/components/Reveal";
-import { GlossySphereCorner } from "@/components/GlossySphere";
 import { SectionLabel } from "@/components/SectionLabel";
+import { useLocale } from "@/components/LocaleProvider";
 
-const focus = [
-  {
-    icon: LuBlocks,
-    title: "What I Build",
-    text: "AI agents that do real work inside a business — pulling structured data from documents, qualifying leads, answering questions from internal knowledge, keeping systems in sync.",
-  },
-  {
-    icon: LuSearchCheck,
-    title: "My Approach",
-    text: "Audit the process before automating it. Deterministic logic wherever correctness matters — the model only for the parts that genuinely require judgment.",
-  },
-];
-
-const pillars = [
-  {
-    icon: LuGauge,
-    title: "Confidence-scored AI",
-    text: "If the model isn't sure, you'll know before it matters.",
-  },
-  {
-    icon: LuUserCheck,
-    title: "Human-in-the-loop by design",
-    text: "The decisions that can hurt you always get a second pair of eyes.",
-  },
-  {
-    icon: LuRocket,
-    title: "Full-stack delivery",
-    text: "One person, start to finish — no handoffs where things get lost.",
-  },
-];
-
-const stages = [
-  {
-    icon: LuHeadset,
-    title: "Customer Support & Operations",
-    text: "Started in BPO and call center work — the early stretch of my career, well before tech.",
-  },
-  {
-    icon: LuBriefcase,
-    title: "Executive & Virtual Assistant",
-    text: "Moved into freelance work, then started building AI and automation projects on the side.",
-  },
-  {
-    icon: LuBot,
-    title: "AI Systems & Automation",
-    text: "Less than two years in, but moved fast — from self-initiated automations in n8n, Make, and Zapier to architecting production AI agents businesses depend on daily.",
-  },
-];
+const focusIcons = [LuBlocks, LuSearchCheck];
+const pillarIcons = [LuGauge, LuUserCheck, LuRocket];
+const stageIcons = [LuHeadset, LuBriefcase, LuBot];
 
 const labelClass =
   "font-sans text-xs font-medium uppercase tracking-[0.15em] text-muted";
 
 export function About() {
+  const { t } = useLocale();
+  const focus = t.about.focus.map((item, i) => ({ ...item, icon: focusIcons[i] }));
+  const pillars = t.about.pillars.map((item, i) => ({ ...item, icon: pillarIcons[i] }));
+  const stages = t.about.stages.map((item, i) => ({ ...item, icon: stageIcons[i] }));
+
   return (
     <section
       id="about"
-      className="relative overflow-hidden border-t border-border bg-wash"
+      className="relative overflow-hidden border-t border-border bg-wash/55 backdrop-blur-[1px]"
     >
-      <GlossySphereCorner
-        corner="bottom-left"
-        primaryColor="var(--color-accent)"
-        secondaryColor="var(--color-foreground)"
-        secondaryOpacity={0.55}
-      />
       <div className="relative mx-auto max-w-5xl px-6 py-32 sm:py-40 lg:py-48">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-[200px_1fr] md:gap-16">
           <Reveal>
-            <SectionLabel>About</SectionLabel>
+            <SectionLabel>{t.about.label}</SectionLabel>
           </Reveal>
           <div>
             <Reveal>
-              <p className={labelClass}>What I Do</p>
+              <p className={labelClass}>{t.about.whatIDo}</p>
             </Reveal>
             <div className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2">
               {focus.map((item, i) => (
@@ -101,7 +57,7 @@ export function About() {
 
             <div className="mt-12 max-w-2xl border-t border-border pt-10">
               <Reveal delay={220}>
-                <p className={labelClass}>How I Got Here</p>
+                <p className={labelClass}>{t.about.howIGotHere}</p>
               </Reveal>
               <div className="mt-6">
                 {stages.map((stage, i) => (
@@ -132,15 +88,11 @@ export function About() {
               </div>
               <div className="mt-10 border-t border-border pt-8">
                 <Reveal delay={260 + stages.length * 80}>
-                  <p className={labelClass}>Why It Matters</p>
+                  <p className={labelClass}>{t.about.whyItMatters}</p>
                 </Reveal>
                 <Reveal delay={260 + stages.length * 80 + 40}>
                   <p className="mt-3 font-serif text-xl leading-relaxed text-foreground/90 italic">
-                    I care about building AI you can audit not because of one
-                    dramatic failure I witnessed, but because it&apos;s the
-                    engineering standard I hold myself to: if a system can&apos;t
-                    show its work, I don&apos;t trust it enough to ship it —
-                    and neither should you.
+                    {t.about.quote}
                   </p>
                 </Reveal>
               </div>
@@ -148,7 +100,7 @@ export function About() {
 
             <div className="mt-12 border-t border-border pt-10">
               <Reveal delay={260 + stages.length * 80 + 60}>
-                <p className={labelClass}>Principles</p>
+                <p className={labelClass}>{t.about.principles}</p>
               </Reveal>
               <div className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-3">
                 {pillars.map((pillar, i) => (
