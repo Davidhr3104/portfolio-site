@@ -1,22 +1,21 @@
 "use client";
 
 import {
-  LuGauge,
-  LuUserCheck,
-  LuRocket,
-  LuHeadset,
-  LuBriefcase,
-  LuBot,
-  LuBlocks,
-  LuSearchCheck,
-} from "react-icons/lu";
+  Gauge,
+  UserCheck,
+  Rocket,
+  Headset,
+  Briefcase,
+  Robot,
+  SquaresFour,
+  MagnifyingGlass,
+} from "@phosphor-icons/react";
 import { Reveal } from "@/components/Reveal";
-import { SectionLabel } from "@/components/SectionLabel";
 import { useLocale } from "@/components/LocaleProvider";
 
-const focusIcons = [LuBlocks, LuSearchCheck];
-const pillarIcons = [LuGauge, LuUserCheck, LuRocket];
-const stageIcons = [LuHeadset, LuBriefcase, LuBot];
+const focusIcons = [SquaresFour, MagnifyingGlass];
+const pillarIcons = [Gauge, UserCheck, Rocket];
+const stageIcons = [Headset, Briefcase, Robot];
 
 const labelClass =
   "font-sans text-xs font-medium uppercase tracking-[0.15em] text-muted";
@@ -35,7 +34,9 @@ export function About() {
       <div className="relative mx-auto max-w-5xl px-6 py-32 sm:py-40 lg:py-48">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-[200px_1fr] md:gap-16">
           <Reveal>
-            <SectionLabel>{t.about.label}</SectionLabel>
+            <h2 className="font-serif text-3xl leading-tight text-foreground sm:text-4xl">
+              {t.about.label}
+            </h2>
           </Reveal>
           <div>
             <Reveal>

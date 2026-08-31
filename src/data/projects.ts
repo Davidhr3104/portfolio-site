@@ -77,7 +77,7 @@ export const projects: Project[] = [
       en: "AI Lead Qualifier automation workflow showing lead scoring, a Google Sheets logging step, and a conditional branch into AI-drafted follow-up emails",
       es: "Flujo de automatización del calificador de leads con IA mostrando el scoring de leads, un paso de registro en Google Sheets y una rama condicional hacia correos de seguimiento redactados por IA",
     },
-    tags: ["Claude API", "Supabase", "Next.js"],
+    tags: ["n8n", "Google Gemini", "Google Sheets"],
     problemTypes: ["Lead & Sales"],
     caseStudy: {
       problem: {
@@ -176,7 +176,7 @@ export const projects: Project[] = [
       en: "CEO inbox automation workflow showing a new email triggering AI analysis and branching into urgent, spam, client, and internal paths",
       es: "Flujo de automatización del inbox de CEO mostrando un correo nuevo activando análisis con IA y ramificándose en rutas de urgente, spam, cliente e interno",
     },
-    tags: ["Claude API", "n8n", "Node.js"],
+    tags: ["Zapier", "Gmail", "Slack"],
     problemTypes: ["Ops & Sync", "Lead & Sales"],
     caseStudy: {
       problem: {

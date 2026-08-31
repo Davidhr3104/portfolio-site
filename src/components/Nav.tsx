@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { LuSun, LuMoon } from "react-icons/lu";
+import { SpotlightNavLinks } from "@/components/SpotlightNavLinks";
 import { useSchedule } from "@/components/ScheduleProvider";
 import { useTheme } from "@/components/ThemeProvider";
 import { useLocale } from "@/components/LocaleProvider";
@@ -29,42 +29,31 @@ export function Nav() {
         <Link
           href="/"
           onClick={() => setOpen(false)}
-          className="font-serif text-base tracking-tight text-foreground transition-colors duration-200 hover:text-accent outline-hidden focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+          className="shrink-0 whitespace-nowrap font-serif text-base tracking-tight text-foreground transition-colors duration-200 hover:text-accent outline-hidden focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
         >
           David Herrera
         </Link>
 
-        <div className="flex items-center gap-5">
-          <ul className="hidden items-center gap-x-6 md:flex">
-            {links.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href} className={linkClass}>
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+        <div className="flex items-center gap-3 sm:gap-5">
+          <SpotlightNavLinks links={links} />
 
           <button
             type="button"
             onClick={openSchedule}
-            className="border border-accent px-4 py-1.5 font-sans text-xs uppercase tracking-[0.12em] text-accent outline-hidden transition-colors duration-300 hover:bg-accent hover:text-background focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+            className="fill-expand-btn hidden text-xs uppercase tracking-[0.12em] sm:inline-block"
           >
             {t.nav.schedule}
           </button>
 
-          <button
-            type="button"
-            onClick={toggleTheme}
-            aria-label={theme === "dark" ? t.nav.toLightMode : t.nav.toDarkMode}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border text-foreground/70 outline-hidden transition-colors duration-200 hover:border-accent hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-          >
-            {theme === "dark" ? (
-              <LuSun size={15} aria-hidden="true" />
-            ) : (
-              <LuMoon size={15} aria-hidden="true" />
-            )}
-          </button>
+          <label className="theme-switch">
+            <input
+              type="checkbox"
+              checked={theme === "dark"}
+              onChange={toggleTheme}
+              aria-label={theme === "dark" ? t.nav.toLightMode : t.nav.toDarkMode}
+            />
+            <span className="theme-switch-slider" aria-hidden="true" />
+          </label>
 
           <button
             type="button"
@@ -72,7 +61,7 @@ export function Nav() {
             aria-label={
               locale === "en" ? "Switch language to Spanish" : "Switch language to English"
             }
-            className="flex h-8 items-center gap-1 rounded-full border border-border px-2.5 font-sans text-xs tracking-[0.05em] text-foreground/70 outline-hidden transition-colors duration-200 hover:border-accent hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="relative flex h-8 items-center gap-1 rounded-full border border-muted px-2.5 font-sans text-xs tracking-[0.05em] text-foreground/70 outline-hidden transition-colors duration-200 before:absolute before:-inset-y-1.5 before:inset-x-0 before:content-[''] hover:border-accent hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             <span className={locale === "en" ? "text-accent" : ""}>EN</span>
             <span aria-hidden="true" className="text-border">
@@ -109,6 +98,18 @@ export function Nav() {
               </Link>
             </li>
           ))}
+          <li className="py-2 sm:hidden">
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                openSchedule();
+              }}
+              className={`${linkClass} block`}
+            >
+              {t.nav.schedule}
+            </button>
+          </li>
         </ul>
       ) : null}
     </header>

@@ -3,11 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import type { KeyboardEvent as ReactKeyboardEvent, PointerEvent as ReactPointerEvent } from "react";
 import Image from "next/image";
-import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
+import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import { PROBLEM_TYPES, type Project, type ProblemType } from "@/data/projects";
 import { CaseModal } from "@/components/CaseModal";
 import { useLocale } from "@/components/LocaleProvider";
 import { SectionLabel } from "@/components/SectionLabel";
+import { PROJECT_IMAGE_BLUR_DATA_URL } from "@/lib/image-placeholder";
 
 export type Item = Project & { hasImage: boolean };
 
@@ -19,13 +20,11 @@ function prefersReducedMotion() {
 }
 
 const arrowClass =
-  "flex h-9 w-9 items-center justify-center border border-border text-foreground/70 outline-hidden transition-colors hover:border-accent hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-30 disabled:hover:border-border disabled:hover:text-foreground/70";
+  "relative flex h-9 w-9 items-center justify-center border border-muted text-foreground/70 outline-hidden transition-colors before:absolute before:-inset-1 before:content-[''] hover:border-accent hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-30 disabled:hover:border-muted disabled:hover:text-foreground/70";
 
 const filterPillClass = (active: boolean) =>
-  `border px-3.5 py-1.5 font-sans text-xs uppercase tracking-[0.1em] outline-hidden transition-colors duration-300 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
-    active
-      ? "border-accent bg-accent text-background"
-      : "border-border text-foreground/70 hover:border-accent hover:text-accent"
+  `glossy-pill px-3.5 py-1.5 font-sans text-xs uppercase tracking-[0.1em] outline-hidden ${
+    active ? "glossy-pill--active" : ""
   }`;
 
 export function ProjectsCarousel({ projects }: { projects: Item[] }) {
@@ -85,21 +84,6 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
       window.clearTimeout(programmaticScrollTimeout.current);
     };
   }, [projects.length]);
-
-  // Native (non-passive) wheel listener so vertical mouse-wheel scroll
-  // moves the carousel horizontally instead of scrolling the page --
-  // React's synthetic onWheel is passive by default and can't preventDefault.
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    function onWheel(e: WheelEvent) {
-      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
-      e.preventDefault();
-      track!.scrollLeft += e.deltaY;
-    }
-    track.addEventListener("wheel", onWheel, { passive: false });
-    return () => track.removeEventListener("wheel", onWheel);
-  }, []);
 
   function scrollToIndex(i: number) {
     const clamped = Math.max(0, Math.min(projects.length - 1, i));
@@ -204,8 +188,11 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
   const activeProject = projects[active];
 
   return (
-    <div className="mt-8">
+    <div className="mt-8" role="region" aria-label={t.projects.carouselAria}>
       <SectionLabel>{t.projects.label}</SectionLabel>
+      <span className="sr-only" aria-live="polite">
+        {t.projects.positionAnnouncement(activeProject.title[locale], active + 1, projects.length)}
+      </span>
       <div className="mt-6 flex flex-wrap items-center gap-2">
         <button
           type="button"
@@ -243,7 +230,7 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
             onClick={() => scrollToIndex(active - 1)}
             className={arrowClass}
           >
-            <LuChevronLeft size={16} aria-hidden="true" />
+            <CaretLeft size={16} aria-hidden="true" />
           </button>
           <button
             type="button"
@@ -252,7 +239,7 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
             onClick={() => scrollToIndex(active + 1)}
             className={arrowClass}
           >
-            <LuChevronRight size={16} aria-hidden="true" />
+            <CaretRight size={16} aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -302,6 +289,8 @@ export function ProjectsCarousel({ projects }: { projects: Item[] }) {
                 alt={project.imageAlt[locale]}
                 fill
                 sizes="260px"
+                placeholder="blur"
+                blurDataURL={PROJECT_IMAGE_BLUR_DATA_URL}
                 className="object-contain"
               />
             ) : (

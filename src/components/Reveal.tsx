@@ -1,6 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+
+function isInViewport(node: Element) {
+  const rect = node.getBoundingClientRect();
+  return rect.top < window.innerHeight && rect.bottom > 0;
+}
 
 export function Reveal({
   children,
@@ -14,16 +19,21 @@ export function Reveal({
   as?: "div" | "article" | "li";
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(
-    () =>
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  );
+  // Server-rendered (and no-JS) markup is always visible -- the fade-in below
+  // is a progressive enhancement layered on top by the effect, never a
+  // precondition for the content to be readable.
+  const [visible, setVisible] = useState(true);
 
-  useEffect(() => {
-    if (visible) return;
+  useLayoutEffect(() => {
     const node = ref.current;
     if (!node) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Already on screen at mount (e.g. above-the-fold content) -- leave it
+    // visible instead of hiding then immediately re-revealing it.
+    if (isInViewport(node)) return;
+
+    // Runs before the browser paints, so this never flashes visible-then-hidden.
+    setVisible(false);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -37,14 +47,14 @@ export function Reveal({
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, [visible]);
+  }, []);
 
   const Component = Tag as "div";
 
   return (
     <Component
       ref={ref}
-      className={`transition-[opacity,transform] duration-700 ease-out will-change-transform ${
+      className={`transition-[opacity,transform] duration-700 ease-out will-change-transform motion-reduce:transition-none motion-reduce:transform-none ${
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
       } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}

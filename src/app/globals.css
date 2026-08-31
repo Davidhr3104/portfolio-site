@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-inter);
-  --font-serif: var(--font-fraunces);
+  --font-sans: var(--font-body);
+  --font-serif: var(--font-display);
 
   --color-background: var(--theme-background);
   --color-foreground: var(--theme-foreground);
@@ -12,6 +12,8 @@
   --color-border: var(--theme-border);
   --color-surface: var(--theme-surface);
   --color-wash: var(--theme-wash);
+  --color-danger: var(--theme-danger);
+  --color-success: var(--theme-success);
 }
 
 :root,
@@ -24,9 +26,11 @@
   --theme-border: #262b32;
   --theme-surface: #1b1f25;
   --theme-wash: #171b21;
+  --theme-danger: #e0776d;
+  --theme-success: #5f9c76;
 
-  --blob-rgb: 100, 140, 190;
-  --grid-rgb: 170, 195, 220;
+  --accent-rgb: 127, 168, 214;
+  --surface-rgb: 27, 31, 37;
 }
 
 /* Light mode is the same editorial palette inverted -- warm paper
@@ -40,18 +44,25 @@
   --theme-foreground: #1c1f24;
   --theme-accent: #3d6693;
   --theme-gold: #96703a;
-  --theme-muted: #6b7280;
+  --theme-muted: #5a6472;
   --theme-border: #e2ddd0;
   --theme-surface: #efe9dd;
   --theme-wash: #f1ece0;
+  /* Both darkened from the dark-mode hue for WCAG AA: the dark-mode values
+     read as 4.5:1+/3:1+ on the near-black background but wash out badly on
+     this paper-light one -- same reasoning as the --theme-muted tuning
+     above. Danger targets 4.5:1 (used as body text); success targets 3:1
+     (a non-text status indicator per WCAG 1.4.11). */
+  --theme-danger: #864741;
+  --theme-success: #4c7d5e;
 
-  --blob-rgb: 61, 102, 147;
-  --grid-rgb: 61, 102, 147;
+  --accent-rgb: 61, 102, 147;
+  --surface-rgb: 239, 233, 221;
 }
 
 :root {
-  --blob-rgb: 100, 140, 190;
-  --grid-rgb: 170, 195, 220;
+  --accent-rgb: 127, 168, 214;
+  --surface-rgb: 27, 31, 37;
 }
 
 html {
@@ -66,91 +77,6 @@ body {
 ::selection {
   background: var(--color-accent);
   color: var(--color-background);
-}
-
-.nebula-parallax {
-  position: absolute;
-  inset: 0;
-  will-change: transform;
-}
-
-.nebula-cloud {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(90px);
-  opacity: 0.32;
-  animation-name: nebula-drift;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-}
-
-.nebula-cloud-a {
-  top: -12%;
-  left: -10%;
-  width: 46vw;
-  height: 46vw;
-  max-width: 620px;
-  max-height: 620px;
-  background: radial-gradient(circle, var(--color-accent), transparent 70%);
-  animation-duration: 46s;
-}
-
-.nebula-cloud-b {
-  bottom: -16%;
-  right: -12%;
-  width: 40vw;
-  height: 40vw;
-  max-width: 560px;
-  max-height: 560px;
-  background: radial-gradient(circle, var(--color-foreground), transparent 70%);
-  animation-duration: 54s;
-  animation-delay: -8s;
-}
-
-@keyframes nebula-drift {
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-  50% {
-    transform: translate(4%, 6%) scale(1.08);
-  }
-}
-
-@keyframes marquee-scroll-y {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-50%);
-  }
-}
-
-.marquee-track-y {
-  animation: marquee-scroll-y 32s linear infinite;
-}
-
-.marquee-mask-y {
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent,
-    black 15%,
-    black 85%,
-    transparent
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    transparent,
-    black 15%,
-    black 85%,
-    transparent
-  );
-}
-
-@media (hover: hover) {
-  .marquee-track-y:hover {
-    animation-play-state: paused;
-  }
 }
 
 @keyframes marquee-scroll-x {
@@ -251,16 +177,9 @@ body {
     grid-template-rows: 1fr !important;
   }
 
-  /* Fixed nav and the animated starfield backdrop don't belong on a
-     printed page. */
+  /* Fixed nav and the animated background don't belong on a printed page. */
   header,
-  .starfield-bg {
-    display: none !important;
-  }
-
-  /* The Tools marquee is a nice-to-have on screen; not worth unpicking its
-     duplicated infinite-loop markup for print, so it's simplest to drop. */
-  .marquee-mask-y {
+  .page-background {
     display: none !important;
   }
 
@@ -281,4 +200,844 @@ body {
   .marquee-track-x [aria-hidden="true"] {
     display: none !important;
   }
+}
+
+/* Radial-glow CTA -- ported from vengenceui.com's "radial-glow-button" registry
+   component (ui hand-written into the project's own token system instead of
+   pulling in the shadcn CLI, since this project has no shadcn setup and no
+   cn() helper). Recolored from the source's cyan/yellow/navy defaults onto
+   --color-accent/--color-gold so it reads as this site's palette, not a
+   dropped-in template. The two --glow-cta-color-1/5 anchors stay a fixed
+   near-black regardless of theme (rather than --color-background) so the
+   white label text keeps contrast even in light mode, when the background
+   token itself is pale. */
+@property --glow-cta-pos-x {
+  syntax: "<percentage>";
+  initial-value: 40%;
+  inherits: false;
+}
+@property --glow-cta-pos-y {
+  syntax: "<percentage>";
+  initial-value: 140%;
+  inherits: false;
+}
+@property --glow-cta-spread-x {
+  syntax: "<percentage>";
+  initial-value: 130%;
+  inherits: false;
+}
+@property --glow-cta-spread-y {
+  syntax: "<percentage>";
+  initial-value: 170%;
+  inherits: false;
+}
+@property --glow-cta-color-1 {
+  syntax: "<color>";
+  initial-value: #10141a;
+  inherits: false;
+}
+@property --glow-cta-color-2 {
+  syntax: "<color>";
+  initial-value: #3d6693;
+  inherits: false;
+}
+@property --glow-cta-color-3 {
+  syntax: "<color>";
+  initial-value: #96703a;
+  inherits: false;
+}
+@property --glow-cta-color-4 {
+  syntax: "<color>";
+  initial-value: #f4e9cf;
+  inherits: false;
+}
+@property --glow-cta-color-5 {
+  syntax: "<color>";
+  initial-value: #10141a;
+  inherits: false;
+}
+@property --glow-cta-border-angle {
+  syntax: "<angle>";
+  initial-value: 180deg;
+  inherits: true;
+}
+@property --glow-cta-border-color-1 {
+  syntax: "<color>";
+  initial-value: hsla(210, 55%, 90%, 0.7);
+  inherits: true;
+}
+@property --glow-cta-border-color-2 {
+  syntax: "<color>";
+  initial-value: hsla(210, 40%, 90%, 0.25);
+  inherits: true;
+}
+@property --glow-cta-stop-1 {
+  syntax: "<percentage>";
+  initial-value: 37.35%;
+  inherits: false;
+}
+@property --glow-cta-stop-2 {
+  syntax: "<percentage>";
+  initial-value: 61.36%;
+  inherits: false;
+}
+@property --glow-cta-stop-3 {
+  syntax: "<percentage>";
+  initial-value: 78.42%;
+  inherits: false;
+}
+@property --glow-cta-stop-4 {
+  syntax: "<percentage>";
+  initial-value: 93.52%;
+  inherits: false;
+}
+@property --glow-cta-stop-5 {
+  syntax: "<percentage>";
+  initial-value: 100%;
+  inherits: false;
+}
+
+.glow-cta {
+  --glow-cta-speed: 1.2s;
+  --glow-cta-cut: 1px;
+  --glow-cta-bg: radial-gradient(
+    var(--glow-cta-spread-x) var(--glow-cta-spread-y) at var(--glow-cta-pos-x) var(--glow-cta-pos-y),
+    var(--glow-cta-color-1) var(--glow-cta-stop-1),
+    var(--glow-cta-color-2) var(--glow-cta-stop-2),
+    var(--glow-cta-color-3) var(--glow-cta-stop-3),
+    var(--glow-cta-color-4) var(--glow-cta-stop-4),
+    var(--glow-cta-color-5) var(--glow-cta-stop-5)
+  );
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 160px;
+  justify-content: center;
+  padding: 0.9rem 1.75rem;
+  border-radius: 9999px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.95);
+  background: var(--glow-cta-bg);
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.95);
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    --glow-cta-pos-x 0.75s, --glow-cta-pos-y 0.75s,
+    --glow-cta-spread-x 0.75s, --glow-cta-spread-y 0.75s,
+    --glow-cta-color-1 0.75s, --glow-cta-color-2 0.75s, --glow-cta-color-3 0.75s,
+    --glow-cta-color-4 0.75s, --glow-cta-color-5 0.75s,
+    --glow-cta-border-angle 0.75s, --glow-cta-border-color-1 0.75s, --glow-cta-border-color-2 0.75s,
+    --glow-cta-stop-1 0.75s, --glow-cta-stop-2 0.75s, --glow-cta-stop-3 0.75s,
+    --glow-cta-stop-4 0.75s, --glow-cta-stop-5 0.75s;
+}
+
+.glow-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background-image: linear-gradient(var(--glow-cta-border-angle), var(--glow-cta-border-color-1), var(--glow-cta-border-color-2));
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.glow-cta:hover,
+.glow-cta:focus-visible {
+  --glow-cta-pos-x: 0%;
+  --glow-cta-pos-y: 120%;
+  --glow-cta-spread-x: 110.24%;
+  --glow-cta-spread-y: 110.2%;
+  --glow-cta-color-1: #10141a;
+  --glow-cta-color-2: #f4e9cf;
+  --glow-cta-color-3: #96703a;
+  --glow-cta-color-4: #3d6693;
+  --glow-cta-stop-1: 0%;
+  --glow-cta-stop-2: 10%;
+  --glow-cta-stop-3: 35.44%;
+  --glow-cta-stop-4: 71.34%;
+  --glow-cta-stop-5: 150%;
+  --glow-cta-border-angle: 190deg;
+  --glow-cta-border-color-1: hsla(38, 70%, 85%, 0.35);
+  --glow-cta-border-color-2: hsla(38, 55%, 85%, 0.5);
+  --glow-cta-shine-opacity: 1;
+}
+
+.glow-cta-label {
+  position: relative;
+  z-index: 1;
+}
+
+.glow-cta-shine {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  border-radius: inherit;
+  mix-blend-mode: soft-light;
+  opacity: var(--glow-cta-shine-opacity, 0);
+  transition: opacity 0.3s;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.glow-cta-shine span {
+  position: absolute;
+  inset: 0;
+  height: 100cqh;
+  aspect-ratio: 1;
+  animation: glow-cta-slide var(--glow-cta-speed) ease-in-out infinite alternate;
+  overflow: visible;
+}
+
+.glow-cta-shine span::before {
+  content: "";
+  position: absolute;
+  inset: -100%;
+  background: conic-gradient(from 225deg, transparent 0, #fff 90deg, transparent 90deg);
+  animation: glow-cta-spin calc(var(--glow-cta-speed) * 2) infinite linear;
+}
+
+@keyframes glow-cta-spin {
+  0% {
+    rotate: 0deg;
+  }
+  15%,
+  35% {
+    rotate: 90deg;
+  }
+  65%,
+  85% {
+    rotate: 270deg;
+  }
+  100% {
+    rotate: 360deg;
+  }
+}
+
+@keyframes glow-cta-slide {
+  to {
+    transform: translate(calc(100cqw - 100%), 0);
+  }
+}
+
+/* Spotlight nav links -- ported from vengenceui.com's "spotlight-navbar"
+   registry component (see SpotlightNavLinks.tsx). --spotlight-x/--ambience-x
+   are written directly to the element's style from JS, bypassing React
+   render for a per-pointer-move value, same technique as the radial-glow
+   CTA above. Tinted with --accent-rgb (declared alongside the theme tokens)
+   instead of the source's flat black/white so it follows the real accent
+   and theme rather than a `.dark` class this project never sets. */
+.spotlight-nav-links {
+  --spotlight-x: 50%;
+  --ambience-x: 50%;
+}
+
+.spotlight-nav-glow {
+  background: radial-gradient(80px circle at var(--spotlight-x) 100%, rgba(var(--accent-rgb), 0.16), transparent 70%);
+}
+
+.spotlight-nav-ambience {
+  background: radial-gradient(50px circle at var(--ambience-x) 0%, rgba(var(--accent-rgb), 0.9), transparent 100%);
+}
+
+/* Solar system -- ported from a vengenceui.com "solar-system" registry
+   component (the published URL 404s; the source was pasted directly and
+   inspected before use). Moved out of the source's dangerouslySetInnerHTML
+   <style> tag into this stylesheet (avoids re-injecting the same block on
+   every render) and recolored from a 7-color rainbow of cosmic-dust
+   particles plus teal sun-glow onto this project's own --accent-rgb/gold,
+   per the one-accent-per-project rule already applied everywhere else. */
+/* This component only renders from md: up (see Tools.tsx) -- the 3D orbit
+   projection doesn't have room to stay legible below that -- so there's a
+   single fixed size here, no responsive breakpoints to maintain. */
+:root {
+  --orbit-radius-inner: 105px;
+  --orbit-radius-mid: 165px;
+  --orbit-radius-outer: 215px;
+}
+
+@keyframes solar-orbit-move {
+  0% {
+    transform: translate(-50%, -50%) rotateZ(0deg) translateX(var(--orbit-radius));
+  }
+  100% {
+    transform: translate(-50%, -50%) rotateZ(-360deg) translateX(var(--orbit-radius));
+  }
+}
+
+/* Counter-rotates the planet card so it stays flat-facing the camera despite
+   the container's 3D tilt, and despite the container's own orbit rotation. */
+@keyframes solar-billboard-cancel {
+  0% {
+    transform: translate(-50%, -50%) rotateZ(0deg) rotateY(10deg) rotateX(-65deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotateZ(360deg) rotateY(10deg) rotateX(-65deg);
+  }
+}
+
+@keyframes solar-sun-pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+@keyframes solar-spin-cw {
+  0% {
+    transform: rotateX(65deg) rotateY(-10deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(65deg) rotateY(-10deg) rotateZ(360deg);
+  }
+}
+
+@keyframes solar-spin-ccw {
+  0% {
+    transform: rotateX(65deg) rotateY(-10deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(65deg) rotateY(-10deg) rotateZ(-360deg);
+  }
+}
+
+.solar-orbit {
+  animation: solar-orbit-move var(--orbit-duration) linear infinite;
+  animation-play-state: var(--orbit-play-state);
+}
+
+.solar-billboard {
+  animation: solar-billboard-cancel var(--orbit-duration) linear infinite;
+  animation-play-state: var(--orbit-play-state);
+}
+
+.solar-sun-pulse {
+  animation: solar-sun-pulse 4s ease-in-out infinite alternate;
+}
+
+.solar-spin-cw {
+  animation: solar-spin-cw 20s linear infinite;
+}
+
+.solar-spin-ccw {
+  animation: solar-spin-ccw 30s linear infinite;
+}
+
+.solar-planet-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.95rem;
+  background: rgba(var(--surface-rgb), 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+  border-radius: 9999px;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  color: var(--color-foreground);
+  white-space: nowrap;
+  user-select: none;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: border-color 0.3s, color 0.3s, background 0.3s, box-shadow 0.3s, scale 0.3s;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Fill-expand button -- from Uiverse.io by gharsh11032000, recolored from
+   the source's flat rgb(193,163,98) onto --color-accent instead of a new
+   one-off color. Text goes to --color-background on hover/active -- accent
+   sits at medium luminosity in both themes, so the background token
+   (near-black in dark, paper in light) reads clearly against it either way,
+   the same trick the Hero intent pills already used before this swap.
+
+   The source's ::before was a fixed 50px circle scaled up 3x (150px) --
+   fine for a short single-word button, but it left the corners of a long
+   pill like "I'm hiring for a project" unfilled since 150px doesn't span
+   its width. Sized to 100%/100% of the button instead (inheriting its
+   border-radius), scaling 0 -> 1, so the fill always exactly matches the
+   button's own shape regardless of label length. */
+.fill-expand-btn {
+  cursor: pointer;
+  position: relative;
+  padding: 0.625rem 1.5rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: var(--color-accent);
+  border: 2px solid var(--color-accent);
+  border-radius: 9999px;
+  background-color: transparent;
+  transition: color 0.3s cubic-bezier(0.23, 1, 0.32, 1), scale 0.3s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  overflow: hidden;
+}
+
+.fill-expand-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  scale: 0;
+  z-index: -1;
+  background-color: var(--color-accent);
+  transition: scale 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.fill-expand-btn:hover::before,
+.fill-expand-btn[aria-pressed="true"]::before {
+  scale: 1;
+}
+
+.fill-expand-btn:hover,
+.fill-expand-btn[aria-pressed="true"] {
+  color: var(--color-background);
+  scale: 1.05;
+  box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.4);
+}
+
+.fill-expand-btn:active {
+  scale: 1;
+}
+
+.fill-expand-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+/* Back-to-top button -- from Uiverse.io by vinodjangid07, recolored from
+   the source's flat near-black + lavender ring (rgba(180,160,255,...), the
+   exact AI-purple glow this site's own design rules ban elsewhere) onto
+   --color-surface/--color-accent. The source's label was a CSS ::before
+   with a hardcoded English "Back to Top" string -- not translatable, and
+   this site is bilingual -- so the label here is a real <span> in the
+   button's own markup (see BackToTop.tsx) instead, sized via max-width
+   rather than font-size so it works with translated strings of any length. */
+.back-to-top-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.15);
+  cursor: pointer;
+  transition: width 0.3s, background-color 0.3s, border-color 0.3s, transform 0.3s, opacity 0.3s;
+  overflow: hidden;
+}
+
+.back-to-top-btn:hover {
+  width: 152px;
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.back-to-top-icon {
+  flex-shrink: 0;
+  color: var(--color-foreground);
+  transition: transform 0.3s, color 0.3s;
+}
+
+.back-to-top-btn:hover .back-to-top-icon {
+  transform: translateY(-200%);
+  color: var(--color-background);
+}
+
+.back-to-top-label {
+  position: absolute;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-background);
+  transition: max-width 0.3s;
+}
+
+.back-to-top-btn:hover .back-to-top-label {
+  max-width: 110px;
+}
+
+.back-to-top-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+/* Send-message button -- from Uiverse.io by adamgiebl, recolored from the
+   source's flat royalblue/white onto --color-accent/--color-background
+   (same contrast trick used elsewhere: accent sits at medium luminosity in
+   both themes, so background reads clearly on it either way). Font-size,
+   uppercase, and tracking are left to the element's own Tailwind classes
+   (see ContactForm.tsx) rather than set here, so they don't fight Tailwind's
+   utility classes on specificity. Border-radius is 9999px (full pill)
+   rather than the source's 16px, matching every other CTA-shaped button on
+   this site (RadialGlowButton, fill-expand-btn, the Dock). */
+.send-btn {
+  background: var(--color-accent);
+  color: var(--color-background);
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  border-radius: 9999px;
+  overflow: hidden;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.send-btn:disabled {
+  cursor: not-allowed;
+}
+
+/* The source animated the label by translateX(5em) inside overflow:hidden --
+   fine for a short one-word label, but "Send Message" / "Enviar mensaje" is
+   long enough that 5em doesn't clear the button's own width before hitting
+   the clipped edge, so it visibly cut the text off mid-word.
+
+   First fix attempt collapsed max-width to 0 instead -- that cleared the
+   text correctly, but collapsing max-width shrinks the button's own layout
+   box (inline-flex sizes to content), so the button visibly got narrower
+   under the cursor on hover. Once shrunk, the cursor landed outside the
+   button, firing mouseleave, which un-hovered it, which snapped it back to
+   full width under the cursor, re-triggering hover -- an infinite hover/
+   unhover oscillation that made the button flicker back and forth and
+   nearly impossible to click.
+
+   translateX(100%) fixes both: it's relative to the label's own rendered
+   width, so it always fully clears the label regardless of language/length
+   (unlike the source's fixed 5em), and being a transform rather than a
+   width change, it's paint-only -- the button's box never resizes, so
+   hovering it can never un-hover itself. */
+.send-btn-label {
+  display: block;
+  margin-left: 0.5em;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.send-btn-icon-wrapper {
+  display: flex;
+}
+
+.send-btn-icon {
+  display: block;
+  transform-origin: center center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.send-btn:hover:not(:disabled) .send-btn-icon-wrapper {
+  animation: send-btn-fly 0.6s ease-in-out infinite alternate;
+}
+
+.send-btn:hover:not(:disabled) .send-btn-icon {
+  transform: rotate(45deg) scale(1.1);
+}
+
+.send-btn:hover:not(:disabled) .send-btn-label {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.send-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+@keyframes send-btn-fly {
+  from {
+    transform: translateY(0.1em);
+  }
+  to {
+    transform: translateY(-0.1em);
+  }
+}
+
+.send-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+/* Tool chip gradient-border hover -- from Uiverse.io by vinodjangid07,
+   adapted rather than copied as-is: the source was a fixed-size 140x40px
+   button whose ::before hardcoded the visible text ("SUBSCRIBE") in CSS
+   content, painted over the real content. Here the chip's real content
+   (icon + tool name, already in Tools.tsx) has to stay visible and the
+   chips vary a lot in width ("n8n" vs "Model Context Protocol (MCP)").
+
+   Square corners (border-radius: 0) match this chip's original look. The
+   gold ring is always visible now (not just on hover) -- it's a ::before
+   ring (border-box padding + mask-composite: exclude, the same technique
+   .glow-cta::before already uses) sitting outside the chip's own content,
+   so there's no separate neutral border underneath to double up with it.
+   Hover only slides the gradient's background-position, giving a shimmer
+   sweep rather than toggling the ring's presence.
+   Colors are derived from --color-gold via color-mix() (light/dark variants)
+   instead of the source's hardcoded #77530a/#ffd277, so the gradient stays
+   on this project's own token and adapts with the theme automatically. */
+.tool-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+}
+
+.tool-chip::before {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  padding: 1.5px;
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--color-gold) 100%, black 40%),
+    color-mix(in srgb, var(--color-gold) 100%, white 45%),
+    color-mix(in srgb, var(--color-gold) 100%, black 40%),
+    color-mix(in srgb, var(--color-gold) 100%, black 40%),
+    color-mix(in srgb, var(--color-gold) 100%, white 45%),
+    color-mix(in srgb, var(--color-gold) 100%, black 40%)
+  );
+  background-size: 250%;
+  background-position: left;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  transition: background-position 0.8s;
+}
+
+.tool-chip:hover::before {
+  background-position: right;
+}
+
+/* X-close fill reveal -- from Uiverse.io by adamgiebl. Only the animation
+   mechanic is taken (a ::before layer expanding out from center-x to fill
+   the button on hover), not the source's pink color/border/box-shadow/
+   border-radius -- those stay whatever the button already has (border-muted
+   square, 44x44px) so this only adds the hover behavior. Fill uses
+   --color-accent and flips the icon to --color-background once covered,
+   the same contrast pattern used everywhere else on this site. */
+.x-close-fill {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.x-close-fill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  left: 50%;
+  right: 50%;
+  z-index: -1;
+  background-color: var(--color-accent);
+  opacity: 0;
+  transition: left 0.4s ease, right 0.4s ease, opacity 0.4s ease;
+}
+
+.x-close-fill:hover::before,
+.x-close-fill:focus-visible::before {
+  left: 0;
+  right: 0;
+  opacity: 1;
+}
+
+.x-close-fill:hover,
+.x-close-fill:focus-visible {
+  color: var(--color-background);
+}
+
+/* Glossy 3D filter pill -- from Uiverse.io by lenfear23. The source is a
+   fixed 150x50px light-chrome/plastic button (white/#D8D9DB gradient,
+   #606060 text) -- recolored onto this project's own tokens via color-mix()
+   instead of keeping the literal gray/white palette, so the raised-bezel
+   *feel* (gradient + layered highlight/shadow) survives in both themes
+   instead of floating as a fixed pale chip on a near-black page. Sized by
+   content (padding, not a fixed 150x50px box) since these filters range
+   from "All" to "Knowledge & Search".
+   The source's :active/:focus press-in shadow is reused for the currently
+   selected filter (aria-pressed="true") rather than only a transient
+   mouse-down state, since that's this app's real "selected" signal --
+   .glossy-pill--active additionally tints the gradient/border with accent
+   so the selected filter still reads as selected, not just "being clicked". */
+.glossy-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid var(--color-border);
+  background-image: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-surface) 100%, black 10%) 0%,
+    color-mix(in srgb, var(--color-surface) 100%, white 8%) 80%,
+    color-mix(in srgb, var(--color-surface) 100%, white 14%) 100%
+  );
+  color: var(--color-foreground);
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, background-image 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.glossy-pill:hover {
+  box-shadow:
+    0 4px 3px 1px color-mix(in srgb, var(--color-surface) 100%, white 18%),
+    0 6px 8px color-mix(in srgb, var(--color-border) 100%, black 12%),
+    0 -4px 4px color-mix(in srgb, var(--color-border) 100%, black 8%),
+    0 -6px 4px color-mix(in srgb, var(--color-surface) 100%, white 20%),
+    inset 0 0 3px 3px color-mix(in srgb, var(--color-border) 100%, black 12%);
+}
+
+.glossy-pill:active,
+.glossy-pill[aria-pressed="true"] {
+  box-shadow:
+    0 4px 3px 1px color-mix(in srgb, var(--color-surface) 100%, white 18%),
+    0 6px 8px color-mix(in srgb, var(--color-border) 100%, black 12%),
+    0 -4px 4px color-mix(in srgb, var(--color-border) 100%, black 8%),
+    0 -6px 4px color-mix(in srgb, var(--color-surface) 100%, white 20%),
+    inset 0 0 5px 3px rgba(0, 0, 0, 0.4),
+    inset 0 0 24px rgba(0, 0, 0, 0.3);
+}
+
+.glossy-pill:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.glossy-pill--active {
+  border-color: var(--color-accent);
+  background-image: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-accent) 100%, black 15%) 0%,
+    var(--color-accent) 80%,
+    color-mix(in srgb, var(--color-accent) 100%, white 15%) 100%
+  );
+  color: var(--color-background);
+}
+
+/* Contact icon tooltip -- from Uiverse.io by david-mohseni. The source
+   gives each social icon its own brand color on hover (Facebook blue,
+   Twitter blue, Instagram pink) -- skipped here in favor of this project's
+   single accent, per the one-accent-per-project rule already applied
+   everywhere else (the icons themselves already carry real brand color via
+   Simple Icons; the tooltip doesn't need to repeat that per-platform).
+   Also swapped the source's div-based tooltip (no text content in the CSS
+   itself) for a real translated label per icon (see Contact.tsx), and the
+   bare `.icon:hover .tooltip` selector for a scoped `.contact-icon` class
+   so it doesn't leak onto unrelated hovered anchors. */
+.contact-icon {
+  position: relative;
+}
+
+.contact-icon-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  translate: -50% 4px;
+  scale: 0.85;
+  white-space: nowrap;
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  background: var(--color-accent);
+  color: var(--color-background);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55), translate 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55), scale 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.contact-icon-tooltip::before {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  translate: -50% 0;
+  rotate: 45deg;
+  width: 8px;
+  height: 8px;
+  background: var(--color-accent);
+}
+
+.contact-icon:hover .contact-icon-tooltip,
+.contact-icon:focus-visible .contact-icon-tooltip {
+  opacity: 1;
+  translate: -50% 0;
+  scale: 1;
+}
+
+/* Theme toggle switch -- from Uiverse.io by satyamchaudharydev. Recolored
+   from the source's literal pink/orange sun gradient (#ff0080/#ff8c00) onto
+   --color-gold (this project's own warm secondary token, already used
+   elsewhere) so the sun reads as "this site's warm accent," not an
+   unrelated hot-pink one-off. The moon's crater inset-shadows swap the
+   source's purple/light-blue (#8983f7/#a3dafb) for tints of --color-accent,
+   this site's actual accent hue, instead of introducing violet. Unlike the
+   other themed elements on this site, the switch's own on/off look isn't
+   meant to react to data-theme -- its checked state literally *is* the
+   site's theme, so a fixed light-track/dark-track pair (not swapped per
+   theme) is what represents that correctly. */
+.theme-switch {
+  display: inline-block;
+  position: relative;
+  width: 3.1em;
+  height: 1.8em;
+  flex-shrink: 0;
+}
+
+.theme-switch input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-switch-slider {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  background-color: var(--color-border);
+  border-radius: 30px;
+  transition: background-color 0.4s;
+}
+
+.theme-switch-slider::before {
+  position: absolute;
+  content: "";
+  height: 1.3em;
+  width: 1.3em;
+  left: 0.25em;
+  top: 50%;
+  translate: 0 -50%;
+  border-radius: 50%;
+  background: linear-gradient(40deg, var(--color-gold), color-mix(in srgb, var(--color-gold) 100%, white 35%) 70%);
+  transition: left 0.4s, background 0.4s, box-shadow 0.4s;
+}
+
+.theme-switch input:checked + .theme-switch-slider {
+  background-color: #303136;
+}
+
+.theme-switch input:checked + .theme-switch-slider::before {
+  left: calc(100% - (1.3em + 0.25em));
+  background: #303136;
+  box-shadow:
+    inset -3px -2px 5px -2px color-mix(in srgb, var(--color-accent) 100%, black 15%),
+    inset -10px -4px 0 0 color-mix(in srgb, var(--color-accent) 100%, white 25%);
+}
+
+.theme-switch input:focus-visible + .theme-switch-slider {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }

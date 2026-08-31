@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { LuX } from "react-icons/lu";
+import { X } from "@phosphor-icons/react";
 import { useFocusTrap } from "@/lib/useFocusTrap";
 
 // Calendly's current booking UI doesn't honor the legacy embed customization
@@ -62,9 +62,9 @@ export function ScheduleModal({
           type="button"
           onClick={onClose}
           aria-label="Close"
-          className="absolute top-3 right-3 z-10 flex h-9 w-9 items-center justify-center border border-border bg-background text-foreground/70 outline-hidden transition-colors hover:border-accent hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="x-close-fill absolute top-3 right-3 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-muted bg-background text-foreground/70 outline-hidden transition-colors hover:border-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
-          <LuX size={16} aria-hidden="true" />
+          <X size={16} aria-hidden="true" />
         </button>
         <iframe
           src={CALENDLY_EMBED_URL}

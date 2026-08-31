@@ -1,12 +1,13 @@
 "use client";
 
 import { SiGmail, SiUpwork, SiGithub } from "react-icons/si";
-import { FaLinkedin } from "react-icons/fa6";
-import { MdVideocam } from "react-icons/md";
+import { TbBrandLinkedin } from "react-icons/tb";
+import { VideoCamera } from "@phosphor-icons/react";
 import { Reveal } from "@/components/Reveal";
 import { SectionLabel } from "@/components/SectionLabel";
 import { ContactForm } from "@/components/ContactForm";
 import { ScheduleIconButton } from "@/components/ScheduleIconButton";
+import { Dock, DockIcon } from "@/components/Dock";
 import { useLocale } from "@/components/LocaleProvider";
 
 const UPWORK_URL = "https://www.upwork.com/freelancers/~01cbe720b774ffd4c6";
@@ -15,7 +16,7 @@ const LINKEDIN_URL = "https://www.linkedin.com/in/david-herrera-tech-ea/";
 const EMAIL = "andreshr4578@gmail.com";
 
 const iconBadgeClass =
-  "flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-surface border border-border text-foreground/80 outline-hidden transition-colors duration-200 hover:border-accent hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+  "contact-icon flex h-full w-full items-center justify-center rounded-full border border-muted bg-surface text-foreground/80 outline-hidden transition-colors duration-200 hover:border-accent hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
 export function Contact() {
   const { t } = useLocale();
@@ -42,48 +43,73 @@ export function Contact() {
               {t.contact.notRightFit}
             </p>
 
-            <div className="mt-8 flex items-center gap-3">
-              <a
-                href={LINKEDIN_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={t.contact.linkedinAria}
-                className={iconBadgeClass}
-              >
-                <FaLinkedin size={18} />
-              </a>
-              <a
-                href={GITHUB_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={t.contact.githubAria}
-                className={iconBadgeClass}
-              >
-                <SiGithub size={18} />
-              </a>
-              <a
-                href={UPWORK_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={t.contact.upworkAria}
-                className={iconBadgeClass}
-              >
-                <SiUpwork size={20} />
-              </a>
-              <ScheduleIconButton
-                className={iconBadgeClass}
-                aria-label={t.contact.scheduleAria}
-              >
-                <MdVideocam size={20} />
-              </ScheduleIconButton>
-              <a
-                href={`mailto:${EMAIL}`}
-                aria-label={t.contact.emailAria}
-                className={iconBadgeClass}
-              >
-                <SiGmail size={18} />
-              </a>
-            </div>
+            <Dock className="mt-8" iconSize={52} iconMagnification={78} iconDistance={130}>
+              <DockIcon>
+                <a
+                  href={LINKEDIN_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={t.contact.linkedinAria}
+                  className={iconBadgeClass}
+                >
+                  <span className="contact-icon-tooltip" aria-hidden="true">
+                    LinkedIn
+                  </span>
+                  <TbBrandLinkedin size={20} />
+                </a>
+              </DockIcon>
+              <DockIcon>
+                <a
+                  href={GITHUB_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={t.contact.githubAria}
+                  className={iconBadgeClass}
+                >
+                  <span className="contact-icon-tooltip" aria-hidden="true">
+                    GitHub
+                  </span>
+                  <SiGithub size={20} />
+                </a>
+              </DockIcon>
+              <DockIcon>
+                <a
+                  href={UPWORK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={t.contact.upworkAria}
+                  className={iconBadgeClass}
+                >
+                  <span className="contact-icon-tooltip" aria-hidden="true">
+                    Upwork
+                  </span>
+                  <SiUpwork size={22} />
+                </a>
+              </DockIcon>
+              <DockIcon>
+                <ScheduleIconButton
+                  className={iconBadgeClass}
+                  aria-label={t.contact.scheduleAria}
+                >
+                  <span className="contact-icon-tooltip" aria-hidden="true">
+                    {t.contact.scheduleLabel}
+                  </span>
+                  <VideoCamera size={22} />
+                </ScheduleIconButton>
+              </DockIcon>
+              <DockIcon>
+                <a
+                  href={`mailto:${EMAIL}`}
+                  aria-label={t.contact.emailAria}
+                  className={iconBadgeClass}
+                >
+                  <span className="contact-icon-tooltip" aria-hidden="true">
+                    {t.contact.emailLabel}
+                  </span>
+                  <SiGmail size={20} />
+                </a>
+              </DockIcon>
+            </Dock>
           </Reveal>
         </div>
       </div>

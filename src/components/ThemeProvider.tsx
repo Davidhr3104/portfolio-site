@@ -17,11 +17,6 @@ type ThemeContextValue = {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-const THEME_COLOR: Record<Theme, string> = {
-  dark: "#14171c",
-  light: "#f6f3ec",
-};
-
 export function ThemeProvider({ children }: { children: ReactNode }) {
   // Dark is the mode on every fresh page load, by design -- no reading
   // from localStorage or prefers-color-scheme here. The toggle only
@@ -30,9 +25,15 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
+    // Read --theme-background live off the root instead of keeping a second
+    // hardcoded copy of the palette here -- this can never drift from
+    // globals.css because there's only one source of truth for the value.
+    const themeColor = getComputedStyle(document.documentElement)
+      .getPropertyValue("--theme-background")
+      .trim();
     document
       .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", THEME_COLOR[theme]);
+      ?.setAttribute("content", themeColor);
   }, [theme]);
 
   function toggleTheme() {

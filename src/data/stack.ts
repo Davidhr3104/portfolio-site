@@ -1,4 +1,4 @@
-import type { IconType } from "react-icons";
+import type { ComponentType } from "react";
 import {
   SiAnthropic,
   SiClaude,
@@ -23,20 +23,28 @@ import {
   SiDocker,
   SiAirtable,
   SiZendesk,
+  SiCursor,
+  SiQwen,
+  SiAsana,
 } from "react-icons/si";
+import { TbBrandOpenai, TbBrandSlack } from "react-icons/tb";
 import {
-  LuDatabase,
-  LuLayers,
-  LuSlidersHorizontal,
-  LuPlug,
-  LuWebhook,
-  LuSlack,
-} from "react-icons/lu";
-import { TbBrandOpenai } from "react-icons/tb";
+  Database,
+  Stack as StackIcon,
+  Sliders,
+  Plugs,
+  Lightning,
+} from "@phosphor-icons/react";
 import { GoHighLevel } from "@/components/icons/GoHighLevel";
 import { Antigravity } from "@/components/icons/Antigravity";
 
-export type StackItem = { label: string; icon?: IconType };
+type StackIconComponent = ComponentType<{
+  size?: number;
+  className?: string;
+  "aria-hidden"?: boolean | "true" | "false";
+}>;
+
+export type StackItem = { label: string; icon?: StackIconComponent };
 
 export const stackCategories: { label: string; items: StackItem[] }[] = [
   {
@@ -47,9 +55,11 @@ export const stackCategories: { label: string; items: StackItem[] }[] = [
       { label: "OpenAI", icon: TbBrandOpenai },
       { label: "Gemini", icon: SiGooglegemini },
       { label: "Claude Cowork", icon: SiClaude },
-      { label: "RAG pipelines", icon: LuDatabase },
-      { label: "Embeddings (Voyage AI)", icon: LuLayers },
-      { label: "Prompt design & evaluation", icon: LuSlidersHorizontal },
+      { label: "Cursor", icon: SiCursor },
+      { label: "Qwen", icon: SiQwen },
+      { label: "RAG pipelines", icon: Database },
+      { label: "Embeddings (Voyage AI)", icon: StackIcon },
+      { label: "Prompt design & evaluation", icon: Sliders },
     ],
   },
   {
@@ -58,8 +68,8 @@ export const stackCategories: { label: string; items: StackItem[] }[] = [
       { label: "n8n", icon: SiN8N },
       { label: "Make", icon: SiMake },
       { label: "Zapier", icon: SiZapier },
-      { label: "Model Context Protocol (MCP)", icon: LuPlug },
-      { label: "Webhooks & scheduled jobs", icon: LuWebhook },
+      { label: "Model Context Protocol (MCP)", icon: Plugs },
+      { label: "Webhooks & scheduled jobs", icon: Lightning },
     ],
   },
   {
@@ -85,7 +95,8 @@ export const stackCategories: { label: string; items: StackItem[] }[] = [
       { label: "HubSpot", icon: SiHubspot },
       { label: "GoHighLevel", icon: GoHighLevel },
       { label: "Notion", icon: SiNotion },
-      { label: "Slack", icon: LuSlack },
+      { label: "Slack", icon: TbBrandSlack },
+      { label: "Asana", icon: SiAsana },
       { label: "Google Workspace", icon: SiGoogle },
       { label: "Airtable", icon: SiAirtable },
       { label: "Zendesk", icon: SiZendesk },

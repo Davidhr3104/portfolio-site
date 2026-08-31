@@ -1,12 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
-function prefersReducedMotion() {
-  return (
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  );
+function subscribeReducedMotion(callback: () => void) {
+  const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mq.addEventListener("change", callback);
+  return () => mq.removeEventListener("change", callback);
+}
+
+function getReducedMotionSnapshot() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function getReducedMotionServerSnapshot() {
+  return false;
 }
 
 export function CountUp({
@@ -22,13 +29,26 @@ export function CountUp({
   const target = match ? parseInt(match[1], 10) : null;
   const suffix = match ? match[2] : "";
 
-  const ref = useRef<HTMLParagraphElement>(null);
-  const [display, setDisplay] = useState(() =>
-    target === null || prefersReducedMotion() ? value : `0${suffix}`
+  // useSyncExternalStore (rather than reading matchMedia in a useState
+  // initializer or effect) is the React-sanctioned way to read this kind of
+  // browser state: it renders the server snapshot (false) on the client's
+  // first pass for hydration parity, then reconciles to the real value --
+  // without the hydration-mismatch warning a diverging useState would cause.
+  const reducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotionSnapshot,
+    getReducedMotionServerSnapshot
   );
 
+  const ref = useRef<HTMLParagraphElement>(null);
+  const [display, setDisplay] = useState(() => (target === null ? value : `0${suffix}`));
+
   useEffect(() => {
-    if (target === null || prefersReducedMotion()) return;
+    // Nothing to animate: either not a number, or the user wants it static.
+    // Rendered value falls back to `value` directly below in that case, so
+    // there's no unsubscribed setState call here -- this effect only ever
+    // fires as part of setting up the IntersectionObserver subscription.
+    if (target === null || reducedMotion) return;
     const node = ref.current;
     if (!node) return;
 
@@ -53,11 +73,13 @@ export function CountUp({
       observer.disconnect();
       cancelAnimationFrame(raf);
     };
-  }, [target, suffix, duration]);
+  }, [target, suffix, duration, reducedMotion]);
+
+  const shown = target === null || reducedMotion ? value : display;
 
   return (
     <p ref={ref} className={className}>
-      {display}
+      {shown}
     </p>
   );
 }

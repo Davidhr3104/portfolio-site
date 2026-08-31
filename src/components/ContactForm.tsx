@@ -2,12 +2,16 @@
 
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { PaperPlaneTilt } from "@phosphor-icons/react";
 import { useLocale } from "@/components/LocaleProvider";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
 const fieldClass =
-  "w-full border border-border bg-surface px-4 py-3 font-sans text-sm text-foreground placeholder:text-muted outline-hidden transition-colors focus:border-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+  "w-full rounded-full border border-muted bg-surface px-5 py-3 font-sans text-sm text-foreground placeholder:text-muted outline-hidden transition-colors focus:border-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+
+const textareaClass =
+  "w-full rounded-2xl border border-muted bg-surface px-5 py-4 font-sans text-sm text-foreground placeholder:text-muted outline-hidden transition-colors focus:border-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
 const labelClass =
   "block font-sans text-xs uppercase tracking-[0.1em] text-muted";
@@ -109,23 +113,25 @@ export function ContactForm() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder={t.contactForm.messagePlaceholder}
-          className={`${fieldClass} mt-2 resize-y`}
+          className={`${textareaClass} mt-2 resize-y`}
         />
       </div>
 
       {status === "error" && (
-        <p className="font-sans text-sm" style={{ color: "#e0776d" }}>
-          {errorMsg}
-        </p>
+        <p className="font-sans text-sm text-danger">{errorMsg}</p>
       )}
 
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="inline-flex items-center gap-3 border border-accent px-6 py-3 font-sans text-sm uppercase tracking-[0.15em] text-accent outline-hidden transition-colors duration-300 hover:bg-accent hover:text-background focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent disabled:opacity-50"
+        className="send-btn px-6 py-3 font-sans text-sm uppercase tracking-[0.15em] outline-hidden disabled:opacity-50"
       >
-        {status === "submitting" ? t.contactForm.sending : t.contactForm.send}
-        <span aria-hidden="true">→</span>
+        <span className="send-btn-icon-wrapper" aria-hidden="true">
+          <PaperPlaneTilt size={18} className="send-btn-icon" />
+        </span>
+        <span className="send-btn-label">
+          {status === "submitting" ? t.contactForm.sending : t.contactForm.send}
+        </span>
       </button>
 
       <p className="font-sans text-xs italic text-muted">{t.contactForm.privacyNote}</p>

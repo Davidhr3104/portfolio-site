@@ -54,6 +54,8 @@ export type Dictionary = {
     zoomAria: (alt: string) => string;
     closeZoomAria: string;
     sections: { problem: string; approach: string; result: string };
+    carouselAria: string;
+    positionAnnouncement: (title: string, index: number, total: number) => string;
   };
   impact: {
     label: string;
@@ -92,6 +94,8 @@ export type Dictionary = {
     githubAria: string;
     upworkAria: string;
     scheduleAria: string;
+    scheduleLabel: string;
+    emailLabel: string;
     emailAria: string;
   };
   contactForm: {
@@ -110,6 +114,8 @@ export type Dictionary = {
   };
   footer: {
     role: string;
+    backToTop: string;
+    backToTopAria: string;
   };
 };
 
@@ -161,7 +167,7 @@ export const en: Dictionary = {
       },
       {
         title: "AI Systems & Automation",
-        text: "Less than two years in, but moved fast: from self-initiated automations in n8n, Make, and Zapier to architecting production AI agents businesses depend on daily.",
+        text: "A little over two years in, but moved fast: from self-initiated automations in n8n, Make, and Zapier to architecting production AI agents businesses depend on daily.",
       },
     ],
     whyItMatters: "Why It Matters",
@@ -217,6 +223,8 @@ export const en: Dictionary = {
     zoomAria: (alt) => `Zoom in on ${alt}`,
     closeZoomAria: "Close zoomed image",
     sections: { problem: "Problem", approach: "Approach", result: "Result" },
+    carouselAria: "Selected work carousel",
+    positionAnnouncement: (title, index, total) => `${title}, project ${index} of ${total}`,
   },
   impact: {
     label: "Impact",
@@ -282,7 +290,7 @@ export const en: Dictionary = {
       },
       {
         question:
-          "You've been doing this less than two years. Why should I trust you with something this important?",
+          "You've been doing this a little over two years. Why should I trust you with something this important?",
         answer:
           "Fair question. My depth is in how deliberately I approach reliability, not years on a calendar. Every system I build separates what needs to be exactly right (deterministic logic) from what genuinely needs a model's judgment, with confidence scoring and human review on anything high-stakes. Happy to walk through the architecture of any project so you can judge the thinking directly, not just the résumé.",
       },
@@ -294,7 +302,7 @@ export const en: Dictionary = {
       {
         question: "What's your typical engagement length?",
         answer:
-          "Ranges from focused 1–2 week builds to ongoing monthly work, depending on scope. I usually start with a smaller trial or discovery phase before a longer commitment.",
+          "Ranges from focused 1-2 week builds to ongoing monthly work, depending on scope. I usually start with a smaller trial or discovery phase before a longer commitment.",
       },
       {
         question:
@@ -325,6 +333,8 @@ export const en: Dictionary = {
     githubAria: "GitHub profile",
     upworkAria: "Upwork profile",
     scheduleAria: "Schedule a call via Zoom",
+    scheduleLabel: "Schedule",
+    emailLabel: "Email",
     emailAria: "Email David",
   },
   contactForm: {
@@ -343,6 +353,8 @@ export const en: Dictionary = {
   },
   footer: {
     role: "AI Systems Architect",
+    backToTop: "Back to top",
+    backToTopAria: "Back to top",
   },
 };
 
@@ -394,7 +406,7 @@ export const es: Dictionary = {
       },
       {
         title: "Sistemas de IA y Automatización",
-        text: "Menos de dos años en esto, pero avanzando rápido: de automatizaciones autoiniciadas en n8n, Make y Zapier a diseñar agentes de IA en producción de los que dependen negocios todos los días.",
+        text: "Poco más de dos años en esto, pero avanzando rápido: de automatizaciones autoiniciadas en n8n, Make y Zapier a diseñar agentes de IA en producción de los que dependen negocios todos los días.",
       },
     ],
     whyItMatters: "Por Qué Importa",
@@ -450,6 +462,8 @@ export const es: Dictionary = {
     zoomAria: (alt) => `Ampliar ${alt}`,
     closeZoomAria: "Cerrar imagen ampliada",
     sections: { problem: "Problema", approach: "Enfoque", result: "Resultado" },
+    carouselAria: "Carrusel de trabajo seleccionado",
+    positionAnnouncement: (title, index, total) => `${title}, proyecto ${index} de ${total}`,
   },
   impact: {
     label: "Impacto",
@@ -515,7 +529,7 @@ export const es: Dictionary = {
       },
       {
         question:
-          "Llevas menos de dos años haciendo esto. ¿Por qué debería confiarte algo tan importante?",
+          "Llevas poco más de dos años haciendo esto. ¿Por qué debería confiarte algo tan importante?",
         answer:
           "Pregunta justa. Mi fortaleza está en qué tan deliberado soy con la confiabilidad, no en los años en un calendario. Cada sistema que construyo separa lo que necesita ser exactamente correcto (lógica determinística) de lo que genuinamente necesita el juicio de un modelo, con scoring de confianza y revisión humana en todo lo de alto riesgo. Con gusto reviso la arquitectura de cualquier proyecto para que juzgues el pensamiento directamente, no solo el currículum.",
       },
@@ -558,6 +572,8 @@ export const es: Dictionary = {
     githubAria: "Perfil de GitHub",
     upworkAria: "Perfil de Upwork",
     scheduleAria: "Agendar una llamada por Zoom",
+    scheduleLabel: "Agendar",
+    emailLabel: "Correo",
     emailAria: "Enviar correo a David",
   },
   contactForm: {
@@ -576,6 +592,8 @@ export const es: Dictionary = {
   },
   footer: {
     role: "Arquitecto de Sistemas de IA",
+    backToTop: "Volver arriba",
+    backToTopAria: "Volver arriba",
   },
 };
 

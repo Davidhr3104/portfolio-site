@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { LuPause, LuPlay } from "react-icons/lu";
+import { Pause, Play } from "@phosphor-icons/react";
 import { Reveal } from "@/components/Reveal";
 import { SectionLabel } from "@/components/SectionLabel";
 import { useLocale } from "@/components/LocaleProvider";
@@ -21,12 +21,12 @@ export function Reviews() {
           type="button"
           onClick={() => setPaused((v) => !v)}
           aria-label={paused ? t.reviews.playAria : t.reviews.pauseAria}
-          className="flex h-9 w-9 items-center justify-center border border-border text-foreground/70 outline-hidden transition-colors hover:border-accent hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="flex h-11 w-11 items-center justify-center border border-muted text-foreground/70 outline-hidden transition-colors hover:border-accent hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
           {paused ? (
-            <LuPlay size={14} aria-hidden="true" />
+            <Play size={14} aria-hidden="true" />
           ) : (
-            <LuPause size={14} aria-hidden="true" />
+            <Pause size={14} aria-hidden="true" />
           )}
         </button>
       </div>

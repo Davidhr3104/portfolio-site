@@ -3,10 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
-import { LuArrowUpRight, LuX, LuZoomIn } from "react-icons/lu";
+import { ArrowUpRight, X, MagnifyingGlassPlus } from "@phosphor-icons/react";
 import type { Item } from "@/components/ProjectsCarousel";
 import { useFocusTrap } from "@/lib/useFocusTrap";
 import { useLocale } from "@/components/LocaleProvider";
+import { PROJECT_IMAGE_BLUR_DATA_URL } from "@/lib/image-placeholder";
 
 export function CaseModal({
   project,
@@ -95,9 +96,9 @@ export function CaseModal({
             type="button"
             onClick={closeModal}
             aria-label={t.projects.closeAria}
-            className="flex h-9 w-9 shrink-0 items-center justify-center border border-border text-foreground/70 outline-hidden transition-colors hover:border-accent hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="x-close-fill flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-muted text-foreground/70 outline-hidden transition-colors hover:border-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
-            <LuX size={16} aria-hidden="true" />
+            <X size={16} aria-hidden="true" />
           </button>
         </div>
 
@@ -117,17 +118,19 @@ export function CaseModal({
             type="button"
             onClick={() => setZoomOpen(true)}
             aria-label={t.projects.zoomAria(imageAlt)}
-            className="group relative mt-6 aspect-video w-full cursor-zoom-in overflow-hidden border border-border bg-surface outline-hidden focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="group relative mt-6 aspect-video w-full cursor-zoom-in overflow-hidden border border-muted bg-surface outline-hidden focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             <Image
               src={`/projects/${project.image}`}
               alt={imageAlt}
               fill
               sizes="(min-width: 768px) 768px, 100vw"
+              placeholder="blur"
+              blurDataURL={PROJECT_IMAGE_BLUR_DATA_URL}
               className="object-contain"
             />
             <span className="absolute right-3 bottom-3 flex h-8 w-8 items-center justify-center border border-border bg-background/80 text-foreground/70 opacity-0 backdrop-blur-xs transition-opacity duration-200 group-hover:opacity-100">
-              <LuZoomIn size={15} aria-hidden="true" />
+              <MagnifyingGlassPlus size={15} aria-hidden="true" />
             </span>
           </button>
         )}
@@ -153,7 +156,7 @@ export function CaseModal({
             className="mt-8 inline-flex items-center gap-2 border border-accent px-4 py-2 font-sans text-sm uppercase tracking-[0.12em] text-accent outline-hidden transition-colors hover:bg-accent hover:text-background focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
           >
             {t.projects.tryLiveDemo}
-            <LuArrowUpRight size={15} aria-hidden="true" />
+            <ArrowUpRight size={15} aria-hidden="true" />
           </a>
         )}
       </div>
@@ -174,9 +177,9 @@ export function CaseModal({
             type="button"
             onClick={() => setZoomOpen(false)}
             aria-label={t.projects.closeZoomAria}
-            className="absolute top-6 right-6 flex h-9 w-9 items-center justify-center border border-border text-foreground/70 outline-hidden transition-colors hover:border-accent hover:text-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="x-close-fill absolute top-6 right-6 flex h-11 w-11 items-center justify-center rounded-full border border-muted text-foreground/70 outline-hidden transition-colors hover:border-accent focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
-            <LuX size={16} aria-hidden="true" />
+            <X size={16} aria-hidden="true" />
           </button>
           <div className="relative h-full max-h-[90vh] w-full max-w-6xl">
             <Image
@@ -184,6 +187,8 @@ export function CaseModal({
               alt={imageAlt}
               fill
               sizes="100vw"
+              placeholder="blur"
+              blurDataURL={PROJECT_IMAGE_BLUR_DATA_URL}
               className="object-contain"
             />
           </div>
