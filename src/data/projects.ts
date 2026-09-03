@@ -29,8 +29,42 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "confidence-extraction",
+    slug: "helix-for-leads",
     index: "01",
+    title: {
+      en: "Helix for Leads",
+      es: "Helix for Leads",
+    },
+    description: {
+      en: "Helix for Leads is an AI assistant for sales teams. It doesn't just store names in a CRM — it looks at each new lead and decides if it's a real opportunity or a waste of time, scores it hot/warm/noise with a plain-language reason, and routes the best ones to the right rep automatically.",
+      es: "Helix for Leads es un asistente de IA para equipos de ventas. No solo guarda nombres en un CRM — evalúa cada lead nuevo y decide si es una oportunidad real o una pérdida de tiempo, lo califica como caliente/tibio/ruido con una razón en lenguaje claro, y enruta los mejores automáticamente al vendedor correcto.",
+    },
+    image: "helix-for-leads.png",
+    imageAlt: {
+      en: "Helix for Leads dashboard showing inbox health, lead quality score, review queue, and a breakdown of hot leads by source",
+      es: "Dashboard de Helix for Leads mostrando la salud del inbox, el puntaje de calidad de leads, la cola de revisión y un desglose de leads calientes por fuente",
+    },
+    tags: ["Claude API", "Next.js", "GoHighLevel"],
+    problemTypes: ["Lead & Sales"],
+    caseStudy: {
+      problem: {
+        en: "Sales reps were drowning in inbound leads with no way to tell a real opportunity from noise — every lead got the same manual research before a rep even knew if it was worth calling.",
+        es: "Los representantes de ventas se ahogaban en leads entrantes sin forma de distinguir una oportunidad real del ruido — cada lead recibía la misma investigación manual antes de que el representante supiera si valía la pena llamarlo.",
+      },
+      approach: {
+        en: "Every lead is scored and labeled hot, warm, or noise, with a short explanation of why — never a bare number. Helix pulls in context (industry, company size, budget) automatically, and when a competitor is mentioned it builds a simple battle card with talking points for the next call. Hot leads route to the right rep, sync to the CRM, and post to Slack without anyone touching a spreadsheet.",
+        es: "Cada lead se califica y se etiqueta como caliente, tibio o ruido, con una breve explicación del porqué — nunca solo un número. Helix reúne contexto automáticamente (industria, tamaño de empresa, presupuesto), y cuando se menciona un competidor arma una battle card sencilla con puntos de conversación para la siguiente llamada. Los leads calientes se enrutan al vendedor correcto, se sincronizan al CRM y se publican en Slack sin que nadie toque una hoja de cálculo.",
+      },
+      result: {
+        en: "Reps stop hunting through junk leads and spend their time on the ones that actually convert, with every score backed by a reason they can verify instead of a black-box label.",
+        es: "Los representantes dejan de cazar entre leads sin valor y dedican su tiempo a los que realmente convierten, con cada score respaldado por una razón que pueden verificar en vez de una etiqueta de caja negra.",
+      },
+    },
+    demoHref: "https://helix-for-leads.vercel.app",
+  },
+  {
+    slug: "confidence-extraction",
+    index: "02",
     title: {
       en: "Confidence-Scored Extraction Agent",
       es: "Agente de Extracción con Nivel de Confianza",
@@ -64,7 +98,7 @@ export const projects: Project[] = [
   },
   {
     slug: "lead-scoring",
-    index: "02",
+    index: "03",
     title: {
       en: "AI Lead Scoring System: 90% Less Qualification Time",
       es: "Sistema de Lead Scoring con IA: 90% Menos Tiempo de Calificación",
@@ -97,7 +131,7 @@ export const projects: Project[] = [
   },
   {
     slug: "rag-assistant",
-    index: "03",
+    index: "04",
     title: {
       en: "Internal Knowledge Assistant",
       es: "Asistente de Conocimiento Interno",
@@ -131,7 +165,7 @@ export const projects: Project[] = [
   },
   {
     slug: "sync-dashboard",
-    index: "04",
+    index: "05",
     title: {
       en: "Multi-System Sync Dashboard",
       es: "Dashboard de Sincronización Multi-Sistema",
@@ -165,7 +199,7 @@ export const projects: Project[] = [
   },
   {
     slug: "ceo-inbox",
-    index: "05",
+    index: "06",
     title: {
       en: "CEO Inbox Automation: $800/mo Recovered",
       es: "Automatización de Inbox para CEO: $800/mes Recuperados",
@@ -198,7 +232,7 @@ export const projects: Project[] = [
   },
   {
     slug: "langgraph-rag",
-    index: "06",
+    index: "07",
     title: {
       en: "LangGraph RAG",
       es: "LangGraph RAG",
@@ -232,7 +266,7 @@ export const projects: Project[] = [
   },
   {
     slug: "multi-agent-research",
-    index: "07",
+    index: "08",
     title: {
       en: "Multi-Agent Research System",
       es: "Multi-Agent Research System",
@@ -266,7 +300,7 @@ export const projects: Project[] = [
   },
   {
     slug: "langgraph-rag-python",
-    index: "08",
+    index: "09",
     title: {
       en: "LangGraph RAG (Python)",
       es: "LangGraph RAG (Python)",
@@ -300,7 +334,7 @@ export const projects: Project[] = [
   },
   {
     slug: "hermes-mini",
-    index: "09",
+    index: "10",
     title: {
       en: "Hermes Mini — Weekly Executive Report Agent",
       es: "Hermes Mini — Agente de Reporte Ejecutivo Semanal",
@@ -331,40 +365,6 @@ export const projects: Project[] = [
       },
     },
     demoHref: "https://portfolio-hermes-mini.vercel.app",
-  },
-  {
-    slug: "mcp-demo",
-    index: "10",
-    title: {
-      en: "MCP Demo — Claude + a Local MCP Server",
-      es: "MCP Demo — Claude + un Servidor MCP Local",
-    },
-    description: {
-      en: "Most \"AI chat\" demos hide what actually happened behind a spinner. This one shows Claude driving a real Model Context Protocol server end-to-end: every tool call — the exact name, arguments, and raw result — renders as its own bubble in the transcript, right where it happened.",
-      es: "La mayoría de las demos de \"chat con IA\" esconden lo que realmente pasó detrás de un spinner. Esta muestra a Claude operando un servidor real de Model Context Protocol de punta a punta: cada llamada a herramienta — el nombre exacto, los argumentos y el resultado crudo — se renderiza como su propia burbuja en la conversación, justo donde ocurrió.",
-    },
-    image: "mcp-demo.png",
-    imageAlt: {
-      en: "MCP Demo chat interface showing a distinct tool-call bubble with the exact tool name, arguments, and raw result between two chat messages",
-      es: "Interfaz de chat de MCP Demo mostrando una burbuja de llamada a herramienta con el nombre exacto, los argumentos y el resultado crudo entre dos mensajes del chat",
-    },
-    tags: ["Claude API", "MCP", "Next.js"],
-    problemTypes: ["Knowledge & Search"],
-    caseStudy: {
-      problem: {
-        en: "Tool-calling demos usually collapse the agentic loop into a black box: a spinner, then an answer, with no visibility into which tools ran, what arguments they got, or what they actually returned.",
-        es: "Las demos de llamadas a herramientas suelen colapsar el loop agéntico en una caja negra: un spinner, y luego una respuesta, sin visibilidad sobre qué herramientas corrieron, con qué argumentos, o qué devolvieron realmente.",
-      },
-      approach: {
-        en: "A real MCP server (stdio transport, 3 tools sandboxed to a workspace folder) is spawned as a child process and its tool list is fetched live via listTools() — never hardcoded. Every tool_use Claude requests is executed against the actual MCP client, and the exact input/output is captured and shipped to the client alongside the final reply, rendered as its own bubble in the transcript.",
-        es: "Un servidor MCP real (transporte stdio, 3 herramientas confinadas a una carpeta de workspace) se lanza como proceso hijo y su lista de herramientas se obtiene en vivo vía listTools() — nunca fija en el código. Cada tool_use que Claude solicita se ejecuta contra el cliente MCP real, y la entrada/salida exacta se captura y se envía al cliente junto con la respuesta final, renderizada como su propia burbuja en la conversación.",
-      },
-      result: {
-        en: "Every step of the agentic loop is auditable in the UI itself, and the same client code works unmodified against any other MCP server (Notion, GitHub, a database) — swapping the server's stdio command is the only change needed.",
-        es: "Cada paso del loop agéntico es auditable en la propia interfaz, y el mismo código cliente funciona sin modificar contra cualquier otro servidor MCP (Notion, GitHub, una base de datos) — cambiar el comando stdio del servidor es el único cambio necesario.",
-      },
-    },
-    demoHref: "https://portfolio-mcp-demo.vercel.app",
   },
   {
     slug: "helix-orchestrator",

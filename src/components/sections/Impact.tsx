@@ -28,7 +28,7 @@ export function Impact() {
             <Reveal key={metric.label} delay={i * 80}>
               <CountUp
                 value={metric.value}
-                className="font-serif text-5xl text-accent sm:text-6xl"
+                className="font-stat-accent text-5xl text-accent sm:text-6xl"
               />
               <p className="mt-3 max-w-[220px] font-sans text-sm leading-relaxed text-muted">
                 {metric.label}
