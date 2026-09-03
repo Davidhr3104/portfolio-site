@@ -14,6 +14,9 @@ export function Projects() {
   const items = projects.map((project) => ({
     ...project,
     hasImage: projectImageExists(project.image),
+    // Drop gallery entries whose file isn't actually on disk yet, so a project can list
+    // future media (e.g. an upcoming video) without breaking the modal in the meantime.
+    gallery: project.gallery?.filter((item) => projectImageExists(item.src)),
   }));
 
   return (

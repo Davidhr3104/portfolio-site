@@ -9,6 +9,13 @@ export type ProblemType = (typeof PROBLEM_TYPES)[number];
 
 export type LocalizedText = { en: string; es: string };
 
+export type MediaItem = {
+  type: "image" | "video";
+  /** Filename under public/projects/ — same convention as the cover `image`. */
+  src: string;
+  alt: LocalizedText;
+};
+
 export type Project = {
   slug: string;
   index: string;
@@ -25,6 +32,11 @@ export type Project = {
   };
   /** Internal route to a live, interactive playground for this project, if one exists. */
   demoHref?: string;
+  /**
+   * Extra photos/video for the case study modal's carousel, shown after the cover image.
+   * Optional — a project with only the cover `image` just shows that one, no arrows.
+   */
+  gallery?: MediaItem[];
 };
 
 export const projects: Project[] = [
@@ -61,6 +73,16 @@ export const projects: Project[] = [
       },
     },
     demoHref: "https://helix-for-leads.vercel.app",
+    gallery: [
+      {
+        type: "video",
+        src: "helix-for-leads.mp4",
+        alt: {
+          en: "Walkthrough of Helix for Leads: scoring an inbound lead, the battle card it builds when a competitor is mentioned, and the CRM/Slack handoff",
+          es: "Recorrido de Helix for Leads: calificando un lead entrante, la battle card que arma cuando se menciona un competidor, y el envío a CRM/Slack",
+        },
+      },
+    ],
   },
   {
     slug: "confidence-extraction",
@@ -299,42 +321,8 @@ export const projects: Project[] = [
     demoHref: "https://portfolio-multi-agent-research.vercel.app",
   },
   {
-    slug: "langgraph-rag-python",
-    index: "09",
-    title: {
-      en: "LangGraph RAG (Python)",
-      es: "LangGraph RAG (Python)",
-    },
-    description: {
-      en: "The Python sibling of LangGraph RAG: same retrieve → generate → verify StateGraph, same fictional corpus, same LangGraph library — FastAPI instead of Next.js. With no credentials configured it falls back to hand-written demo runs instead of crashing, and always marks that fallback explicitly rather than pretending it's a live answer.",
-      es: "El hermano en Python de LangGraph RAG: el mismo StateGraph de recuperar → generar → verificar, el mismo corpus ficticio, la misma librería LangGraph — FastAPI en vez de Next.js. Sin credenciales configuradas cae a corridas de demo escritas a mano en vez de fallar, y siempre marca ese modo explícitamente en vez de aparentar ser una respuesta en vivo.",
-    },
-    image: "langgraph-rag-python.png",
-    imageAlt: {
-      en: "FastAPI Swagger UI for the LangGraph RAG Python service showing the POST /query endpoint",
-      es: "Interfaz Swagger de FastAPI para el servicio LangGraph RAG en Python mostrando el endpoint POST /query",
-    },
-    tags: ["Python", "FastAPI", "LangGraph"],
-    problemTypes: ["Knowledge & Search"],
-    caseStudy: {
-      problem: {
-        en: "Needed real, hands-on Python practice with LangGraph and FastAPI specifically — not just a mental exercise of translating the existing TypeScript app, but an independently built service that happens to solve the same problem.",
-        es: "Se necesitaba práctica real y directa con LangGraph y FastAPI en Python específicamente — no solo un ejercicio mental de traducir la app existente en TypeScript, sino un servicio construido de forma independiente que resuelve el mismo problema.",
-      },
-      approach: {
-        en: "Ported the retrieve → generate → verify graph node-for-node and the chunker line-for-line, so both apps split and embed the shared corpus identically and produce directly comparable retrieval results — while the API shape changes to fit FastAPI: one request/response endpoint with a collected execution trace, instead of a live SSE stream, so it plays well with Swagger's \"Try it out.\"",
-        es: "Se portó el grafo de recuperar → generar → verificar nodo por nodo y el chunker línea por línea, de forma que ambas apps dividen e indexan el corpus compartido de forma idéntica y producen resultados de recuperación directamente comparables — mientras la forma de la API cambia para ajustarse a FastAPI: un único endpoint de solicitud/respuesta con una traza de ejecución recopilada, en vez de un stream SSE en vivo, para que funcione bien con el botón \"Try it out\" de Swagger.",
-      },
-      result: {
-        en: "A working FastAPI service with automatic Swagger docs, a demo mode that's never silently indistinguishable from a live run, and a graph structure that mirrors the TypeScript version closely enough to compare both runtimes' behavior side by side.",
-        es: "Un servicio de FastAPI funcional con documentación Swagger automática, un modo demo que nunca se confunde en silencio con una corrida en vivo, y una estructura de grafo que refleja la versión en TypeScript lo suficientemente cerca como para comparar el comportamiento de ambos runtimes en paralelo.",
-      },
-    },
-    demoHref: "https://portfolio-langgraph-rag-python.vercel.app",
-  },
-  {
     slug: "hermes-mini",
-    index: "10",
+    index: "09",
     title: {
       en: "Hermes Mini — Weekly Executive Report Agent",
       es: "Hermes Mini — Agente de Reporte Ejecutivo Semanal",
@@ -368,7 +356,7 @@ export const projects: Project[] = [
   },
   {
     slug: "helix-orchestrator",
-    index: "11",
+    index: "10",
     title: {
       en: "Helix Orchestrator — Multi-Agent Content System",
       es: "Helix Orchestrator — Sistema de Contenido Multi-Agente",
@@ -402,7 +390,7 @@ export const projects: Project[] = [
   },
   {
     slug: "lead-scoring-demo",
-    index: "12",
+    index: "11",
     title: {
       en: "Lead Scoring — Auditable AI Triage",
       es: "Lead Scoring — Triaje de IA Auditable",

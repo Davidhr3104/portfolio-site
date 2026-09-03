@@ -53,6 +53,9 @@ export type Dictionary = {
     closeAria: string;
     zoomAria: (alt: string) => string;
     closeZoomAria: string;
+    prevMediaAria: string;
+    nextMediaAria: string;
+    goToMediaAria: (position: number) => string;
     sections: { problem: string; approach: string; result: string };
     carouselAria: string;
     positionAnnouncement: (title: string, index: number, total: number) => string;
@@ -222,6 +225,9 @@ export const en: Dictionary = {
     closeAria: "Close",
     zoomAria: (alt) => `Zoom in on ${alt}`,
     closeZoomAria: "Close zoomed image",
+    prevMediaAria: "Previous media",
+    nextMediaAria: "Next media",
+    goToMediaAria: (position) => `Go to media ${position}`,
     sections: { problem: "Problem", approach: "Approach", result: "Result" },
     carouselAria: "Selected work carousel",
     positionAnnouncement: (title, index, total) => `${title}, project ${index} of ${total}`,
@@ -461,6 +467,9 @@ export const es: Dictionary = {
     closeAria: "Cerrar",
     zoomAria: (alt) => `Ampliar ${alt}`,
     closeZoomAria: "Cerrar imagen ampliada",
+    prevMediaAria: "Contenido anterior",
+    nextMediaAria: "Contenido siguiente",
+    goToMediaAria: (position) => `Ir al contenido ${position}`,
     sections: { problem: "Problema", approach: "Enfoque", result: "Resultado" },
     carouselAria: "Carrusel de trabajo seleccionado",
     positionAnnouncement: (title, index, total) => `${title}, proyecto ${index} de ${total}`,
